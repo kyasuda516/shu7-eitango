@@ -1,0 +1,138 @@
+# prod
+
+services:
+  ap:
+    image: sh7e-ap:prod
+    build: 
+      target: prod
+    env_file:
+      - ./envs/mysql.env
+      - ./envs/redis.env
+    secrets:
+      - db_root_password
+      - db_user
+      - db_password
+      - db_database
+      - cache_password
+      - cache_database
+    restart: always
+
+  cache:
+    user: redis
+    command: ['/bin/sh', '-c', 'redis-server --requirepass "$$(sed -n 1p $$REDIS_PASSWORD_FILE)"']
+    env_file:
+      - ./envs/redis.env
+    secrets:
+      - cache_password
+      - cache_database
+    restart: always
+
+  db:
+    image: sh7e-db:prod
+    build: 
+      target: prod
+    env_file:
+      - ./envs/mysql.env
+    restart: always
+    secrets:
+      - db_root_password
+      - db_user
+      - db_password
+      - db_database
+
+  web:
+    image: sh7e-web:prod
+    build: 
+      target: prod
+    restart: always
+    deploy:
+      resources:
+        limits:
+          pids: 20
+    volumes:
+      - ssl_certs:/etc/letsencrypt/
+      - dist:/usr/share/nginx/html/ssl-proof/
+
+  cert:
+    image: certbot/certbot:v2.6.0
+    restart: "no"
+    profiles:
+      - "extra"
+    volumes:
+      - ssl_certs:/etc/letsencrypt/
+      - dist:/dist/
+    command: --version
+
+  geoip:
+    image: ghcr.io/maxmind/geoipupdate:v6.0
+    restart: "no"
+    profiles:
+      - "extra"
+    environment:
+      GEOIPUPDATE_EDITION_IDS: GeoLite2-City
+    volumes:
+      - geoip_db:/usr/share/GeoIP/
+
+  grafana:
+    image: sh7e-grafana:prod
+    build:
+      target: prod
+    env_file:
+      - ./envs/grafana.env
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
+      - grafana_mail_address
+      - grafana_mail_key
+    restart: always
+
+  loki:
+    image: sh7e-loki:prod
+    build:
+      target: prod
+    restart: always
+    volumes:
+      - loki_data:/loki/
+
+  promtail:
+    image: sh7e-promtail:prod
+    build:
+      target: prod
+    restart: always
+
+volumes:
+  mysql_data:
+    external: true
+    name: sh7e_mysql_data_1
+  grafana_data:
+    external: true
+    name: sh7e_grafana_data_1
+  loki_data:
+    external: true
+    name: sh7e_loki_data_1
+  ssl_certs:
+    external: true
+    name: sh7e_ssl_certs_1
+  dist:
+
+secrets:
+  db_root_password:
+    file: ./secrets/db_root_password.secret
+  db_user:
+    file: ./secrets/db_user.secret
+  db_password:
+    file: ./secrets/db_password.secret
+  db_database:
+    file: ./secrets/db_database.secret
+  cache_password:
+    file: ./secrets/cache_password.secret
+  cache_database:
+    file: ./secrets/cache_database.secret
+  grafana_admin_user:
+    file: ./secrets/grafana_admin_user.secret
+  grafana_admin_password:
+    file: ./secrets/grafana_admin_password.secret
+  grafana_mail_address:
+    file: ./secrets/grafana_mail_address.secret
+  grafana_mail_key:
+    file: ./secrets/grafana_mail_key.secret

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="error-template">
+        <h1>
+            お探しのページは見つかりませんでした。</h1>
+        <h2>
+            404 Not Found</h2>
+        <div class="error-details">
+            申し訳ありません。お探しのページは見つかりませんでした。
+        </div>
+        <div class="error-actions">
+          <a href="{{url_for('index')}}" class="btn btn-secondary btn-lg">
+            <span class="glyphicon glyphicon-home"></span>
+            ホームへ戻る
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+.*
+!.gitignore
+!.gitkeep
+
+# secret
+*.secret
+*.key
+*.crt
+
+# test
+/test/**/*
+!/test/.gitkeep

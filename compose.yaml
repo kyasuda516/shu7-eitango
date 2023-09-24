@@ -1,0 +1,87 @@
+# common
+
+version: "3"
+
+services:
+  ap:
+    build: 
+      context: ./services/ap/
+    environment:
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+    depends_on:
+      - db
+      - cache
+    ports:
+      - 127.0.0.1:3031:3031
+    networks:
+      - ap_db
+      - ap_cache
+
+  cache:
+    image: redis:7.0.12
+    networks: 
+      - ap_cache
+
+  db:
+    build:
+      context: ./services/db/
+    tty: true
+    volumes:
+      - mysql_data:/var/lib/mysql/
+    networks:
+      - ap_db
+
+  web:
+    build:
+      context: ./services/web/
+    depends_on:
+      - ap
+      - loki
+    volumes:
+      - nginx_logs:/var/log/nginx/
+      - geoip_db:/usr/share/GeoIP/
+    network_mode: host
+  
+  grafana:
+    build:
+      context: ./services/grafana/
+    volumes:
+      - grafana_data:/var/lib/grafana/
+    ports:
+      - 127.0.0.1:3128:3128
+    networks:
+      - loki_grafana
+
+  loki:
+    build:
+      context: ./services/loki/
+    networks:
+      - promtail_loki
+      - loki_grafana
+
+  promtail:
+    build:
+      context: ./services/promtail/
+    volumes:
+      - nginx_logs:/var/log/nginx/:ro
+    networks:
+      - promtail_loki
+
+volumes:
+  nginx_logs:
+  geoip_db:
+    external: true
+    name: sh7e_geoip_db_1
+
+networks:
+  ap_db:
+    driver: bridge
+  ap_cache:
+    driver: bridge
+  promtail_loki:
+    driver: bridge
+  loki_grafana:
+    driver: bridge

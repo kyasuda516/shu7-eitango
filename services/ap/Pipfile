@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+isort = "*"
+mypy = "*"
+
+[packages]
+pip-review = "==1.3.0"
+Flask = "==2.3.2"
+Flask-Caching = "==2.0.2"
+uWSGI = "==2.0.21"
+mysql-connector-python = "==8.0.33"
+redis = "==4.5.5"
+
+[requires]
+python_version = "%pythonVersion%"

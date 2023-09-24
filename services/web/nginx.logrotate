@@ -1,0 +1,18 @@
+/var/log/nginx/access.log
+/var/log/nginx/error.log
+{
+  daily
+  maxsize 1M
+  missingok
+  notifempty
+  rotate 7
+  dateext
+  dateyesterday
+  compress
+  delaycompress
+  create
+  sharedscripts
+  postrotate
+    nginx -s reopen
+  endscript
+}

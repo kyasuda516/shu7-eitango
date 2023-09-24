@@ -1,0 +1,79 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+  log_level: warn
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: web-access-log
+    pipeline_stages:
+      - regex: 
+          expression: '^time_access:(?P<time_access>.*)\tremote_addr:(?P<remote_addr>.*)\tremote_port:(?P<remote_port>.*)\tremote_user:(?P<remote_user>.*)\tcountry_code:(?P<country_code>.*)\tsubdivision_code:(?P<subdivision_code>.*)\tsubdivision_name:(?P<subdivision_name>.*)\tcity_name:(?P<city_name>.*)\taccuracy_radius:(?P<accuracy_radius>.*)\tlatitude:(?P<latitude>.*)\tlongitude:(?P<longitude>.*)\trequest_method:(?P<request_method>.*)\trequest_uri:(?P<request_uri>.*)\trequest_protocol:(?P<request_protocol>.*)\tstatus:(?P<status>.*)\tsize:(?P<size>.*)\treferer:(?P<referer>.*)\tforwarded_for:(?P<forwarded_for>.*)\trequest_time:(?P<request_time>.*)\tuser_agent:(?P<user_agent>.*)$'
+      - labels:
+          remote_addr:
+          remote_port:
+          remote_user:
+          country_code:
+          subdivision_code:
+          subdivision_name:
+          city_name:
+          accuracy_radius:
+          latitude:
+          longitude:
+          request_method:
+          request_uri:
+          request_protocol:
+          status:
+          size:
+          referer:
+          forwarded_for:
+          request_time:
+          user_agent:
+      - timestamp:
+          source: time_access
+          format: RFC3339
+      - output:
+          source: remote_addr
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: web_access
+          __path__: /var/log/nginx/access.log
+  - job_name: web-error-log
+    pipeline_stages:
+      - regex:
+          # expression: '^(?P<timestamp>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?P<severity>emerg|alert|crit|error|warn|notice|info)\] (?P<process_id>\d+)#(?P<thread_id>\d+): \*(?P<connection_id>\d+) (?P<error>.+?)(?: while (?P<context>.+?))?, client: (?P<client_ip>\d+\.\d+\.\d+\.\d+), server: (?P<server>.+?)(?:, request: \"(?P<request_method>[A-Z]+?) (?P<request_path>\/.+?) (?P<request_protocol>.+?)\")?(?:, upstream: \"(?P<upstream>.+?)\")?(?:, host: \"(?P<host>.+?)\")?(?:, referrer: \"(?P<referrer>.+?)\")?$'
+          expression: '^(?P<time_error>\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}) \[(?P<severity>emerg|alert|crit|error|warn|notice|info)\] (?P<process_id>\d+)#(?P<thread_id>\d+): ((?:\*(?P<connection_id>\d+) |(?P<error_number>\d+)) )?(?P<message>(?P<error>.+?)(?: while (?P<context>.+?))?, client: (?P<remote_addr>\d+\.\d+\.\d+\.\d+), server: (?P<server>.+?)(?:, request: \"(?P<request_method>[A-Z]+?) (?P<request_uri>\/.+?) (?P<request_protocol>.+?)\")?(?:, upstream: \"(?P<upstream>.+?)\")?(?:, host: \"(?P<host>.+?)\")?(?:, referrer: \"(?P<referer>.+?)\")?|.+)$'
+      - labels:
+          severity:
+          process_id:
+          thread_id:
+          connection_id:
+          error_number:
+          error_message:
+          error:
+          context:
+          remote_addr:
+          server:
+          request_method:
+          request_uri:
+          request_protocol:
+          upstream:
+          host:
+          referer:
+      - timestamp:
+          source: time_error
+          format: '2006\/01\/02 15:04:05'
+          # ↑ なぜかスラッシュにエスケープが必要だった。また、クオートなしでもいいが、ダブルクオートだとエラーに。
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: web_error
+          __path__: /var/log/nginx/error.log
