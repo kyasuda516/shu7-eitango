@@ -13,14 +13,15 @@ scrape_configs:
   - job_name: web-access-log
     pipeline_stages:
       - regex: 
-          expression: '^time_access:(?P<time_access>.*)\tremote_addr:(?P<remote_addr>.*)\tremote_port:(?P<remote_port>.*)\tremote_user:(?P<remote_user>.*)\tcountry_code:(?P<country_code>.*)\tsubdivision_code:(?P<subdivision_code>.*)\tsubdivision_name:(?P<subdivision_name>.*)\tcity_name:(?P<city_name>.*)\taccuracy_radius:(?P<accuracy_radius>.*)\tlatitude:(?P<latitude>.*)\tlongitude:(?P<longitude>.*)\trequest_method:(?P<request_method>.*)\trequest_uri:(?P<request_uri>.*)\trequest_protocol:(?P<request_protocol>.*)\tstatus:(?P<status>.*)\tsize:(?P<size>.*)\treferer:(?P<referer>.*)\tforwarded_for:(?P<forwarded_for>.*)\trequest_time:(?P<request_time>.*)\tuser_agent:(?P<user_agent>.*)$'
+          expression: '^time_access:(?P<time_access>.*)\tremote_addr:(?P<remote_addr>.*)\tremote_port:(?P<remote_port>.*)\tremote_user:(?P<remote_user>.*)\tcountry_name:(?P<country_name>.*)\tcity_name:(?P<city_name>.*)\taccuracy_radius:(?P<accuracy_radius>.*)\tlatitude:(?P<latitude>.*)\tlongitude:(?P<longitude>.*)\trequest_method:(?P<request_method>.*)\trequest_uri:(?P<request_uri>.*)\trequest_protocol:(?P<request_protocol>.*)\tstatus:(?P<status>.*)\tsize:(?P<size>.*)\treferer:(?P<referer>.*)\tforwarded_for:(?P<forwarded_for>.*)\trequest_time:(?P<request_time>.*)\tuser_agent:(?P<user_agent>.*)$'
       - labels:
           remote_addr:
           remote_port:
           remote_user:
-          country_code:
-          subdivision_code:
-          subdivision_name:
+          # country_code:
+          country_name:
+          # subdivision_code:
+          # subdivision_name:
           city_name:
           accuracy_radius:
           latitude:
@@ -38,7 +39,7 @@ scrape_configs:
           source: time_access
           format: RFC3339
       - output:
-          source: remote_addr
+          source: forwarded_for
     static_configs:
       - targets:
           - localhost
