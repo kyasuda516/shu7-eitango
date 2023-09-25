@@ -9,7 +9,7 @@
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha256-MBffSnbbXwHCuZtgPYiwMQbfE7z+GOZ7fBPCNB06Z98=" crossorigin="anonymous"> -->
   <link href="{{ url_for('static', filename='css/bootstrap_custom.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/transition.css') }}" rel="stylesheet">
-  <title>週7英単語</title>
+  <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
   <header class="sticky-top">
@@ -35,8 +35,7 @@
   </header>
 
   <main class="bg-success text-white">
-    {% block content %}
-    {% endblock %}
+    {% block content %}{% endblock %}
   </main>
 
   <footer class="bg-secondary text-center text-white py-3 px-5 mt-0">
