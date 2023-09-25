@@ -1,25 +1,20 @@
 {% extends 'base.html' %}
 {% block title %}Not Found&nbsp;|&nbsp;週7英単語{% endblock %}
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="error-template">
-        <h1>
-            お探しのページは見つかりませんでした。</h1>
-        <h2>
-            404 Not Found</h2>
-        <div class="error-details">
-            申し訳ありません。お探しのページは見つかりませんでした。
-        </div>
-        <div class="error-actions">
-          <a href="{{url_for('index')}}" class="btn btn-secondary btn-lg">
-            <span class="glyphicon glyphicon-home"></span>
-            ホームへ戻る
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  <h1>404 Not Found</h1>
+  <br>
+  <h3>申し訳ありません。お探しのページは見つかりませんでした。</h2>
+  <br>
+  <p>以下の理由が考えられます。</p>
+  <ul>
+    <li>一時的にアクセスができなくなっている。</li>
+    <li>すでに削除されて無効になっている。</li>
+    <li>URLの入力やリンク先が間違っている、変更されている。</li>
+  </ul>
+  <p>このページをブックマークに登録されていた方は、お手数ですがブックマークの変更をお願いいたします。  </p>
+  <!-- <p>恐れ入りますが、以下のボタンよりホームに戻るか、ブラウザバックしていただきますようお願いいたします。</p>
+  <a href="{{url_for('index')}}" class="btn btn-secondary btn-lg">
+    <span class="glyphicon glyphicon-home"></span>
+    ホームへ戻る
+  </a> -->
 {% endblock %}

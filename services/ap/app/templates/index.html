@@ -1,32 +1,27 @@
 {% extends 'base.html' %}
 {% block title %}週7英単語{% endblock %}
 {% block content %}
-<!-- <div class="container p-4 px-md-5"> -->
-<div class="d-grid col-sm-9 col-md-8 col-lg-7 col-xxl-6 mx-auto px-3 py-4 px-md-0">
-  <!-- <section class="row"> -->
-    <div class="fs-5 pt-1 pb-3 max-vw-20">
-      <img src="{{ url_for('static', filename='img/main_visual.svg') }}" class="img-fluid w-100 py-5" transition-style="in:wipe:curtain" alt="週7英単語 メインビジュアル">
-      <div transition-style="in:fade">
-        <p class="text-center fs-4 py-2">週7英単語は毎日の英単語学習を目的としたブラウザ型暗記カードです。</p>
-        <p class="text-center fs-4 py-2">曜日ごとに違ったカードの束（Bunch）を用意しています。各曜日の午前6時になると、自動で内容が更新されます。</p>
-        <div class="d-grid col-sm-9 col-lg-7 mx-auto py-2">
-          <a class="btn btn-light text-success align-baseline fs-3 px-2 rounded-4" href="{{ url_for('get_today_bunch') }}" style="font-family: 'Montserrat', sans-serif; font-weight: 700;">
-            Go to Today's Bunch!
-          </a>
-        </div>
-        <br>
-        <p class="text-center fs-6">※単語の日本語訳は&nbsp;
-          <a class="text-reset" href="https://www.jamsystem.com/ancdic/index.html" target="_blank">
-            ANC英和頻出辞典
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
-              <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
-            </svg>
-          </a> 
-        &nbsp;によっています。</p>
-        <p class="text-center fs-6">※更新について、品詞ごとに決まった数だけデータベースから無作為抽出しておこなっています。そのため、同じカードが連日収録される場合があることをご了承ください。</p>
+  <div class="fs-5 pt-1 pb-3 max-vw-20">
+    <img src="{{ url_for('static', filename='img/main_visual.svg') }}" class="img-fluid w-100 py-5" transition-style="in:wipe:curtain" alt="週7英単語 メインビジュアル">
+    <div transition-style="in:fade">
+      <p class="text-center fs-4 py-2">週7英単語は毎日の英単語学習を目的としたブラウザ型暗記カードです。</p>
+      <p class="text-center fs-4 py-2">曜日ごとに違ったカードの束（Bunch）を用意しています。各曜日の午前6時になると、自動で内容が更新されます。</p>
+      <div class="d-grid col-sm-9 col-lg-7 mx-auto py-2">
+        <a class="btn btn-light text-success align-baseline fs-3 px-2 rounded-4" href="{{ url_for('get_today_bunch') }}" style="font-family: 'Montserrat', sans-serif; font-weight: 700;">
+          Go to Today's Bunch!
+        </a>
       </div>
+      <br>
+      <p class="text-center fs-6">※単語の日本語訳は&nbsp;
+        <a class="text-reset" href="https://www.jamsystem.com/ancdic/index.html" target="_blank">
+          ANC英和頻出辞典
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+            <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+          </svg>
+        </a> 
+      &nbsp;によっています。</p>
+      <p class="text-center fs-6">※更新について、品詞ごとに決まった数だけデータベースから無作為抽出しておこなっています。そのため、同じカードが連日収録される場合があることをご了承ください。</p>
     </div>
-  <!-- </section> -->
-</div>
+  </div>
 {% endblock %}
