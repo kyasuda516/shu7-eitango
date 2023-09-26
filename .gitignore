@@ -1,6 +1,7 @@
 .*
 !.gitignore
 !.gitkeep
+*.css.map
 
 # secret
 *.secret
