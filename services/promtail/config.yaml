@@ -39,7 +39,7 @@ scrape_configs:
           source: time_access
           format: RFC3339
       - output:
-          source: forwarded_for
+          source: remote_addr
     static_configs:
       - targets:
           - localhost
