@@ -20,6 +20,7 @@ RUN pip install --upgrade pip \
  && pip install --no-cache-dir -r /requirements-dev.lock
 
 FROM python:${PYTHON_VERSION}-slim AS base
+ENV TZ="Asia/Tokyo"
 WORKDIR /app/
 RUN apt update \
  && apt -y upgrade \

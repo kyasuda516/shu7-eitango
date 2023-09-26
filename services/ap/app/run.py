@@ -1,7 +1,9 @@
 from flask import Flask
+from flask import make_response
 from flask import render_template
 from flask import redirect
 from flask_caching import Cache
+from flask_caching import CachedResponse
 # from flask_cors import CORS
 from werkzeug.debug import DebuggedApplication
 import mysql.connector
@@ -23,15 +25,14 @@ def get_const_value(const_name: str) -> str:
   else:  
     raise ValueError(f'Varievle {const_name} is not defined.')
 
-if not os.environ.get('DEBUG_MODE') in ('1', 1, 'True', True):
-  cache = Cache(app, config={
-    'CACHE_TYPE': 'redis',
-    'CACHE_REDIS_HOST': os.environ['REDIS_HOST'],
-    'CACHE_REDIS_PORT': os.environ['REDIS_PORT'],
-    'CACHE_REDIS_PASSWORD': get_const_value('REDIS_PASSWORD'),
-    'CACHE_REDIS_DB': get_const_value('REDIS_DATABASE'),
-    'CACHE_DEFAULT_TIMEOUT': 60,
-  })
+cache = Cache(app, config={
+  'CACHE_TYPE': 'redis',
+  'CACHE_REDIS_HOST': os.environ['REDIS_HOST'],
+  'CACHE_REDIS_PORT': os.environ['REDIS_PORT'],
+  'CACHE_REDIS_PASSWORD': get_const_value('REDIS_PASSWORD'),
+  'CACHE_REDIS_DB': get_const_value('REDIS_DATABASE'),
+  'CACHE_DEFAULT_TIMEOUT': 60,
+})
 
 DAYS = {
   day_name[:3].lower(): {
@@ -53,7 +54,7 @@ DAYS = {
 }
 
 def get_timeout():
-  HH, MM, SS = 6, 0, 30
+  HH, MM, SS = 6, 1, 30
   now = datetime.now()
   sec = (now.replace(hour=HH, minute=MM, second=SS) - now).total_seconds() % (24*60*60)
   return int(sec)
@@ -76,8 +77,8 @@ def get_today_bunch():
   day_sym = [day_sym for day_sym, day in DAYS.items() if day['id']==day_id][0]
   return redirect(f'/bunch/{day_sym}')
 
-# @app.route('/bunch/<string:day_sym>', methods=['GET'])    # ほんとはこう書きたいが、デバッグ用の分岐のために
-# @cache.cached(timeout=get_timeout())                      # 代わりとなるコードを *1 に後述する。
+@app.route('/bunch/<string:day_sym>', methods=['GET'])
+@cache.cached()
 def get_bunch(day_sym):
   if day_sym in DAYS:
     pass
@@ -110,13 +111,14 @@ def get_bunch(day_sym):
 
   cnx.close()
 
-  return render_template(
-    'bunch.html', 
+  response = make_response(render_template('bunch.html', 
     this_day_sym=day_sym,
     cards=cards,
     created_date=date,
+  ))
+  timeout = 1 if os.environ.get('DEBUG_MODE') in ('1', 1, 'True', True) else get_timeout()
+  # Note: 0ではデフォルト秒数になるので1で1秒に
+  return CachedResponse(
+    response=response,
+    timeout=timeout
   )
-
-if not os.environ.get('DEBUG_MODE') in ('1', 1, 'True', True):                # ここから *1
-  get_bunch = cache.cached(timeout=get_timeout())(get_bunch)
-get_bunch = app.route('/bunch/<string:day_sym>', methods=['GET'])(get_bunch)  # ここまで
