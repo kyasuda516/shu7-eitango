@@ -59,7 +59,7 @@ root: BEGIN
       `genres`.`name` AS `genre`,
       `pool`.`word`,
       `pool`.`ja`,
-      `pool`.`proc`
+      `pool`.`pron`
     FROM
       `t` JOIN `pool` ON `t`.`id` = `pool`.`id`
           JOIN `genres` ON `t`.`genre_id` = `genres`.`id` 
