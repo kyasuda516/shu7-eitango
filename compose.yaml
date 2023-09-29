@@ -11,9 +11,12 @@ services:
       MYSQL_PORT: 3306
       REDIS_HOST: cache
       REDIS_PORT: 6379
+      WORDSAPI_KEY: /run/secrets/wordsapi_key
     depends_on:
       - db
       - cache
+    secrets:
+      - wordsapi_key
     ports:
       - 127.0.0.1:3031:3031
     networks:
@@ -75,6 +78,10 @@ volumes:
   geoip_db:
     external: true
     name: sh7e_geoip_db_1
+
+secrets:
+  wordsapi_key:
+    file: ./secrets/wordsapi_key.secret
 
 networks:
   ap_db:

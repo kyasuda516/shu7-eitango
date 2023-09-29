@@ -9,28 +9,19 @@ from werkzeug.debug import DebuggedApplication
 import mysql.connector
 import os
 from datetime import date, datetime
+import mymodule
 
 app = Flask(__name__)
 if os.environ.get('DEBUG_MODE') in ('1', 1, 'True', True):
   app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
   app.debug = True
 
-def get_const_value(const_name: str) -> str:
-  filepath_env_name = f'{const_name}_FILE'
-  if filepath_env_name in os.environ and os.path.exists(os.environ[filepath_env_name]):
-    with open(os.environ[filepath_env_name], 'r') as f:
-      return f.readline()
-  elif const_name in os.environ:
-    return os.environ[const_name]
-  else:  
-    raise ValueError(f'Varievle {const_name} is not defined.')
-
 cache = Cache(app, config={
   'CACHE_TYPE': 'redis',
   'CACHE_REDIS_HOST': os.environ['REDIS_HOST'],
   'CACHE_REDIS_PORT': os.environ['REDIS_PORT'],
-  'CACHE_REDIS_PASSWORD': get_const_value('REDIS_PASSWORD'),
-  'CACHE_REDIS_DB': get_const_value('REDIS_DATABASE'),
+  'CACHE_REDIS_PASSWORD': mymodule.get_const_value('REDIS_PASSWORD'),
+  'CACHE_REDIS_DB': mymodule.get_const_value('REDIS_DATABASE'),
   'CACHE_DEFAULT_TIMEOUT': 60,
 })
 
@@ -90,9 +81,9 @@ def get_bunch(day_sym):
   cnx = mysql.connector.connect(
     host=os.environ['MYSQL_HOST'],
     port=os.environ['MYSQL_PORT'],
-    user=get_const_value('MYSQL_USER'),
-    password=get_const_value('MYSQL_PASSWORD'),
-    database=get_const_value('MYSQL_DATABASE'),
+    user=mymodule.get_const_value('MYSQL_USER'),
+    password=mymodule.get_const_value('MYSQL_PASSWORD'),
+    database=mymodule.get_const_value('MYSQL_DATABASE'),
   )
   table = f'bunch{DAYS[day_sym]["id"]}'
   cur = cnx.cursor(dictionary=True)
@@ -110,6 +101,11 @@ def get_bunch(day_sym):
   print(date)
 
   cnx.close()
+
+  # それぞれのカードについて発音を取得
+  words_api = mymodule.WordsAPI()
+  for card in cards:
+    card['pron'] = words_api.get_pronunciation(card['word'])
 
   response = make_response(render_template('bunch.html', 
     this_day_sym=day_sym,
