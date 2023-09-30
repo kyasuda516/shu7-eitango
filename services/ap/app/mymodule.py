@@ -30,14 +30,30 @@ class WordsAPI():
   logger.setLevel(INFO)
 
   def get_pronunciation(self, word):
-    return word
+    self.logger.info(f'time:{time.time():.9f}\tword:{word}\tres_code:999\tres_sec:0.000000\tpron:-')
+    return '-'
     url = f'https://wordsapiv1.p.rapidapi.com/words/{word}/pronunciation'
+    time_request = time.time()
     res = requests.get(url, headers=self.headers)
-    data = res.json()
-    try:
-      pron = data['pronunciation']['all']
-    except:
-      pron = word
-    self.logger.info(f'time:{time.time():.9f}\tres_code:{res.status_code}\tword:{word}\tpron:{pron}')
+    res_sec = time.time() - time_request
     self.i += 1
+
+    pron = '-'
+    decoded = True
+    
+    try:
+      data = res.json()
+    except requests.exceptions.JSONDecodeError:
+      decoded = False
+    
+    if decoded:
+      data = data[0] if isinstance(data, list) else data
+      if isinstance(data, dict):
+        prons = data.get('pronunciation', pron)
+        if isinstance(prons, dict):
+          pron = data.get('all', pron)
+        elif isinstance(prons, str):
+          pron = prons
+    
+    self.logger.info(f'time:{time_request:.9f}\tword:{word}\tres_code:{res.status_code}\tres_sec:{res_sec:.6f}\tpron:{pron}')
     return pron

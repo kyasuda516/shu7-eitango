@@ -81,10 +81,11 @@ scrape_configs:
   - job_name: ap-wordsapi-log
     pipeline_stages:
       - regex: 
-          expression: '^time:(?P<time>.*)\tres_code:(?P<res_code>.*)\tword:(?P<word>.*)\tpron:(?P<pron>.*)$'
+          expression: '^time:(?P<time>.*)\tword:(?P<word>.*)\tres_code:(?P<res_code>.*)\tres_sec:(?P<res_sec>.*)\tpron:(?P<pron>.*)$'
       - labels:
-          res_code:
           word:
+          res_code:
+          res_sec:
           pron:
       - timestamp:
           source: time
