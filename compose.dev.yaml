@@ -10,6 +10,7 @@ services:
       # tags: ["sh7e-ap:dev"]   # image要素があるので不要 (imageで設定している名前で書き出される)。
     environment:
       DEBUG_MODE: 1
+      AVOID_API: 1
     env_file:
       - ./envs/mysql.dev.env
       - ./envs/redis.dev.env

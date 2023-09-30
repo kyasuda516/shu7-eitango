@@ -1,8 +1,12 @@
 import os
 import requests
-from logging import getLogger, FileHandler, INFO
+from logging import getLogger, INFO
+from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
-import time
+from time import time
+from datetime import time as create_time
+
+AVOID_API = os.environ.get('AVOID_API') in ('1', 1, 'True', True)
 
 LOG_DIR = Path(__file__).parent / 'log'
 if not LOG_DIR.exists(): LOG_DIR.mkdir()
@@ -24,18 +28,24 @@ class WordsAPI():
   }
   i = 1
   logger = getLogger(f'{__name__}::WordsAPI')
-  logger.addHandler(FileHandler(
-    filename=LOG_DIR / 'wordsapi.log', encoding='UTF-8'
+  logger.addHandler(TimedRotatingFileHandler(
+    filename=LOG_DIR / 'wordsapi.log', 
+    when='MIDNIGHT',
+    backupCount=7,
+    encoding='UTF-8',
+    delay=False,
+    atTime=create_time(0, 0, 30),
   ))
   logger.setLevel(INFO)
 
   def get_pronunciation(self, word):
-    self.logger.info(f'time:{time.time():.9f}\tword:{word}\tres_code:999\tres_sec:0.000000\tpron:-')
-    return '-'
+    if AVOID_API:
+      self.logger.info(f'time:{time():.9f}\tword:{word}\tres_code:999\tres_sec:0.000000\tpron:-')
+      return '-'
     url = f'https://wordsapiv1.p.rapidapi.com/words/{word}/pronunciation'
-    time_request = time.time()
+    time_request = time()
     res = requests.get(url, headers=self.headers)
-    res_sec = time.time() - time_request
+    res_sec = time() - time_request
     self.i += 1
 
     pron = '-'

@@ -5,6 +5,8 @@ services:
     image: sh7e-ap:stg
     build: 
       target: stg
+    environment:
+      - AVOID_API: 1
     env_file:
       - ./envs/mysql.env
       - ./envs/redis.env
