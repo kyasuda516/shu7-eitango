@@ -78,3 +78,22 @@ scrape_configs:
         labels:
           job: web_error
           __path__: /var/log/nginx/error.log
+  - job_name: ap-wordsapi-log
+    pipeline_stages:
+      - regex: 
+          expression: '^time:(?P<time>.*)\tres_code:(?P<res_code>.*)\tword:(?P<word>.*)\tpron:(?P<pron>.*)$'
+      - labels:
+          res_code:
+          word:
+          pron:
+      - timestamp:
+          source: time
+          format: Unix
+      - output:
+          source: pron
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: ap_wordsapi
+          __path__: /var/log/python/wordsapi.log

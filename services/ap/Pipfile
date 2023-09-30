@@ -14,6 +14,7 @@ Flask-Caching = "==2.0.2"
 uWSGI = "==2.0.21"
 mysql-connector-python = "==8.0.33"
 redis = "==4.5.5"
+requests = "==2.31.0"
 
 [requires]
 python_version = "%pythonVersion%"

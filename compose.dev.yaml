@@ -14,7 +14,11 @@ services:
       - ./envs/mysql.dev.env
       - ./envs/redis.dev.env
     volumes:
-      - ./services/ap/app/:/app/:ro
+      - ./services/ap/app/static/:/app/static/:ro
+      - ./services/ap/app/templates/:/app/templates/:ro
+      - ./services/ap/app/mymodule.py:/app/mymodule.py:ro
+      - ./services/ap/app/run.py:/app/run.py:ro
+      - ./services/ap/app/uwsgi.ini:/app/uwsgi.ini:ro
   
   cache:
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
