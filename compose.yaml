@@ -11,7 +11,7 @@ services:
       MYSQL_PORT: 3306
       REDIS_HOST: cache
       REDIS_PORT: 6379
-      WORDSAPI_KEY: /run/secrets/wordsapi_key
+      WORDSAPI_KEY_FILE: /run/secrets/wordsapi_key
     depends_on:
       - db
       - cache
