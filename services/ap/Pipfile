@@ -15,6 +15,7 @@ uWSGI = "==2.0.21"
 mysql-connector-python = "==8.0.33"
 redis = "==4.5.5"
 requests = "==2.31.0"
+limits = "==3.6.0"
 
 [requires]
 python_version = "%pythonVersion%"

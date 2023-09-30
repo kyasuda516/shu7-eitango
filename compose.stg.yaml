@@ -17,6 +17,8 @@ services:
       - db_database
       - cache_password
       - cache_database
+      - cache_database2
+      - cache_database3
     restart: always
 
   cache:
@@ -27,6 +29,8 @@ services:
     secrets:
       - cache_password
       - cache_database
+      - cache_database2
+      - cache_database3
     restart: always
 
   db:
@@ -106,6 +110,10 @@ secrets:
     file: ./secrets/cache_password.secret
   cache_database:
     file: ./secrets/cache_database.secret
+  cache_database2:
+    file: ./secrets/cache_database2.secret
+  cache_database3:
+    file: ./secrets/cache_database3.secret
   grafana_admin_user:
     file: ./secrets/grafana_admin_user.secret
   grafana_admin_password:
