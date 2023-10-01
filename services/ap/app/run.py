@@ -8,7 +8,7 @@ from flask_caching import CachedResponse
 from werkzeug.debug import DebuggedApplication
 import mysql.connector
 import os
-from datetime import date, datetime
+from datetime import date
 import mymodule
 
 app = Flask(__name__)
@@ -43,12 +43,6 @@ DAYS = {
     'Saturday', 
   ])
 }
-
-def get_timeout():
-  HH, MM, SS = 6, 1, 30
-  now = datetime.now()
-  sec = (now.replace(hour=HH, minute=MM, second=SS) - now).total_seconds() % (24*60*60)
-  return int(sec)
 
 @app.context_processor
 def utility_processor():
@@ -112,7 +106,7 @@ def get_bunch(day_sym):
     cards=cards,
     created_date=date,
   ))
-  timeout = 1 if os.environ.get('DEBUG_MODE') in ('1', 1, 'True', True) else get_timeout()
+  timeout = 1 if os.environ.get('DEBUG_MODE') in ('1', 1, 'True', True) else mymodule.get_timeout()
   # Note: 0ではデフォルト秒数になるので1で1秒に
   return CachedResponse(
     response=response,
