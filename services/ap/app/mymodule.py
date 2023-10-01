@@ -71,7 +71,7 @@ class WordsAPI():
     pron_bytes = self.redis_cli.get(f'{self.pron_key_preffix}{word}')
     pron = None if pron_bytes is None else pron_bytes.decode('utf-8')
 
-    AVOID_API = False         # 必ず消す！！！☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★
+    # AVOID_API = False         # 必ず消す！！！☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★
     if not AVOID_API and pron is None and self.limiter.hit(self.rate_limit, 'WordsAPI'):
       from random import randint, choice
       from time import sleep
@@ -99,7 +99,9 @@ class WordsAPI():
       #   if isinstance(data, dict):
       #     prons = data.get('pronunciation', pron)
       #     if isinstance(prons, dict):
-      #       pron = data.get('all', pron)
+      #       pron = prons.get('all', pron)
+      #       # pron = prons.get(pos, False) or prons.get('all', pron)
+      #       # pos として有効なのはとりあえず verb noun adjective adverb がある
       #     elif isinstance(prons, str):
       #       pron = prons
       
