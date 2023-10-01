@@ -72,8 +72,10 @@ class WordsAPI():
     pron = None if pron_bytes is None else pron_bytes.decode('utf-8')
 
     AVOID_API = False         # 必ず消す！！！☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★
-    if pron is None and not AVOID_API and self.limiter.hit(self.rate_limit, 'WordsAPI'):
+    if not AVOID_API and pron is None and self.limiter.hit(self.rate_limit, 'WordsAPI'):
       from random import randint, choice
+      from time import sleep
+      sleep(0.1)
       pron = ''.join([choice(list('零壱弐参肆伍陸漆捌玖')) for _ in range(randint(4, 12))])
       time_request = time()
       res_code = 2200
@@ -107,9 +109,12 @@ class WordsAPI():
     else:
       if AVOID_API: 
         pron = pron or 'Avoided!'
+        res_code = 603
+      elif pron is not None:
         res_code = 600
       else:
-        res_code = 429
+        pron = '-'
+        res_code = 629
       time_request = time()
       res_sec = 0.
     
