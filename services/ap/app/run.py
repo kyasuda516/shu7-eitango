@@ -18,8 +18,8 @@ if os.environ.get('DEBUG_MODE').lower() in ('1', 'true'):
 
 cache = Cache(app, config={
   'CACHE_TYPE': 'redis',
-  'CACHE_REDIS_HOST': os.environ['REDIS_HOST'],
-  'CACHE_REDIS_PORT': os.environ['REDIS_PORT'],
+  'CACHE_REDIS_HOST': mymodule.REDIS_HOST,
+  'CACHE_REDIS_PORT': mymodule.REDIS_PORT,
   'CACHE_REDIS_PASSWORD': mymodule.get_const_value('REDIS_PASSWORD'),
   'CACHE_REDIS_DB': mymodule.get_const_value('REDIS_DATABASE'),
   'CACHE_DEFAULT_TIMEOUT': 60,
@@ -73,8 +73,8 @@ def get_bunch(day_sym):
     return render_template('error_404.html'), 404
 
   cnx = mysql.connector.connect(
-    host=os.environ['MYSQL_HOST'],
-    port=os.environ['MYSQL_PORT'],
+    host=mymodule.MYSQL_HOST,
+    port=mymodule.MYSQL_PORT,
     user=mymodule.get_const_value('MYSQL_USER'),
     password=mymodule.get_const_value('MYSQL_PASSWORD'),
     database=mymodule.get_const_value('MYSQL_DATABASE'),

@@ -10,26 +10,26 @@ import redis
 from datetime import datetime
 
 AVOID_API = os.environ.get('AVOID_API').lower() in ('1', 'true')
-
+MYSQL_HOST = 'db'
+MYSQL_PORT = '3306'
+REDIS_HOST = 'cache'
+REDIS_PORT = '6379'
+WORDSAPI_KEY_FILE = '/run/secrets/wordsapi_key'
 LOG_DIR = Path(__file__).parent / 'log'
 if not LOG_DIR.exists(): LOG_DIR.mkdir()
 
 def get_const_value(const_name: str) -> str:
   filepath_env_name = f'{const_name}_FILE'
-  if filepath_env_name in os.environ and os.path.exists(os.environ[filepath_env_name]):
-    with open(os.environ[filepath_env_name], 'r') as f:
-      return f.readline()
+  if filepath_env_name in globals():
+    with open(eval(filepath_env_name)) as f: return f.readline()
+  elif const_name in globals():
+    return eval(const_name)
+  elif filepath_env_name in os.environ:
+    with open(os.environ[filepath_env_name]) as f: return f.readline()
   elif const_name in os.environ:
     return os.environ[const_name]
   else:
     raise ValueError(f'Varievle {const_name} is not defined.')
-
-REDIS_HOST = os.environ['REDIS_HOST']
-REDIS_PORT = os.environ['REDIS_PORT']
-REDIS_PASSWORD = get_const_value('REDIS_PASSWORD')
-REDIS_DB = get_const_value('REDIS_DATABASE')       # ページキャッシュ用
-REDIS_DB2 = get_const_value('REDIS_DATABASE2')     # API呼び出し監視用
-REDIS_DB3 = get_const_value('REDIS_DATABASE3')     # 発音データのキャッシュ用
 
 def get_timeout() -> int:
   HH, MM, SS = 6, 1, 30
@@ -54,15 +54,16 @@ class WordsAPI():
   ))
   logger.setLevel(INFO)
 
-  storage = limits.storage.RedisStorage(f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB2}')
+  storage = limits.storage.RedisStorage(
+    f'redis://:{get_const_value("REDIS_PASSWORD")}@{REDIS_HOST}:{REDIS_PORT}/{get_const_value("REDIS_DATABASE2")}')
   limiter = limits.strategies.MovingWindowRateLimiter(storage)
   rate_limit = limits.parse('200/2hours')
 
   pool = redis.ConnectionPool(
     host=REDIS_HOST,
     port=REDIS_PORT,
-    db=REDIS_DB3,
-    password=REDIS_PASSWORD,
+    db=get_const_value('REDIS_DATABASE3'),
+    password=get_const_value('REDIS_PASSWORD'),
   )
   redis_cli = redis.Redis(connection_pool=pool)
   pron_key_preffix = 'wordsapi/pron/'
@@ -120,5 +121,6 @@ class WordsAPI():
       time_request = time()
       res_sec = 0.
     
-    self.logger.info(f'time:{time_request:.9f}\tword:{word}\tres_code:{res_code}\tres_sec:{res_sec:.6f}\tpron:{pron}')
+    self.logger.info(
+      f'time:{time_request:.9f}\tword:{word}\tres_code:{res_code}\tres_sec:{res_sec:.6f}\tpron:{pron}')
     return pron
