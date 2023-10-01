@@ -54,7 +54,6 @@ class WordsAPI():
   def get_pronunciation(self, word) -> str:
     pron = '-'
 
-    AVOID_API = False         # 必ず消す！！！☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★
     if AVOID_API or not self.limiter.hit(self.rate_limit, 'WordsAPI'):
       time_request = time()
       res_code = 429
