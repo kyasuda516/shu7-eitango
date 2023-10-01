@@ -6,45 +6,18 @@ services:
     build: 
       target: stg
     environment:
-      - AVOID_API: 1
-    env_file:
-      - ./envs/mysql.env
-      - ./envs/redis.env
-    secrets:
-      - db_root_password
-      - db_user
-      - db_password
-      - db_database
-      - cache_password
-      - cache_database
-      - cache_database2
-      - cache_database3
+      AVOID_API: 1
     restart: always
 
   cache:
     user: redis
-    command: ['/bin/sh', '-c', 'redis-server --requirepass "$$(sed -n 1p $$REDIS_PASSWORD_FILE)"']
-    env_file:
-      - ./envs/redis.env
-    secrets:
-      - cache_password
-      - cache_database
-      - cache_database2
-      - cache_database3
     restart: always
 
   db:
     image: sh7e-db:stg
     build: 
       target: stg
-    env_file:
-      - ./envs/mysql.env
     restart: always
-    secrets:
-      - db_root_password
-      - db_user
-      - db_password
-      - db_database
 
   web:
     image: sh7e-web:stg
@@ -65,12 +38,10 @@ services:
       target: stg
     env_file:
       - ./envs/grafana.env
+    restart: always
     secrets:
-      - grafana_admin_user
-      - grafana_admin_password
       - grafana_mail_address
       - grafana_mail_key
-    restart: always
 
   loki:
     image: sh7e-loki:stg
@@ -87,37 +58,11 @@ services:
     restart: always
 
 volumes:
-  mysql_data:
-    external: true
-    name: sh7e_mysql_data_1
-  grafana_data:
-    external: true
-    name: sh7e_grafana_data_1
   loki_data:
     external: true
     name: sh7e_loki_data_1
 
 secrets:
-  db_root_password:
-    file: ./secrets/db_root_password.secret
-  db_user:
-    file: ./secrets/db_user.secret
-  db_password:
-    file: ./secrets/db_password.secret
-  db_database:
-    file: ./secrets/db_database.secret
-  cache_password:
-    file: ./secrets/cache_password.secret
-  cache_database:
-    file: ./secrets/cache_database.secret
-  cache_database2:
-    file: ./secrets/cache_database2.secret
-  cache_database3:
-    file: ./secrets/cache_database3.secret
-  grafana_admin_user:
-    file: ./secrets/grafana_admin_user.secret
-  grafana_admin_password:
-    file: ./secrets/grafana_admin_password.secret
   grafana_mail_address:
     file: ./secrets/grafana_mail_address.secret
   grafana_mail_key:

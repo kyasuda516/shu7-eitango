@@ -9,9 +9,20 @@ services:
     depends_on:
       - db
       - cache
+    env_file:
+      - ./envs/mysql.env
+      - ./envs/redis.env
     volumes:
       - python_logs:/app/log/
     secrets:
+      - db_root_password
+      - db_user
+      - db_password
+      - db_database
+      - cache_password
+      - cache_database
+      - cache_database2
+      - cache_database3
       - wordsapi_key
     ports:
       - 127.0.0.1:3031:3031
@@ -21,6 +32,14 @@ services:
 
   cache:
     image: redis:7.0.12
+    command: ['/bin/sh', '-c', 'redis-server --requirepass "$$(sed -n 1p $$REDIS_PASSWORD_FILE)"']
+    env_file:
+      - ./envs/redis.env
+    secrets:
+      - cache_password
+      - cache_database
+      - cache_database2
+      - cache_database3
     networks: 
       - ap_cache
 
@@ -28,8 +47,15 @@ services:
     build:
       context: ./services/db/
     tty: true
+    env_file:
+      - ./envs/mysql.env
     volumes:
       - mysql_data:/var/lib/mysql/
+    secrets:
+      - db_root_password
+      - db_user
+      - db_password
+      - db_database
     networks:
       - ap_db
 
@@ -49,6 +75,9 @@ services:
       context: ./services/grafana/
     volumes:
       - grafana_data:/var/lib/grafana/
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
     ports:
       - 127.0.0.1:3128:3128
     networks:
@@ -76,10 +105,36 @@ volumes:
   geoip_db:
     external: true
     name: sh7e_geoip_db_1
+  mysql_data:
+    external: true
+    name: sh7e_mysql_data_1
+  grafana_data:
+    external: true
+    name: sh7e_grafana_data_1
 
 secrets:
   wordsapi_key:
     file: ./secrets/wordsapi_key.secret
+  db_root_password:
+    file: ./secrets/db_root_password.secret
+  db_user:
+    file: ./secrets/db_user.secret
+  db_password:
+    file: ./secrets/db_password.secret
+  db_database:
+    file: ./secrets/db_database.secret
+  cache_password:
+    file: ./secrets/cache_password.secret
+  cache_database:
+    file: ./secrets/cache_database.secret
+  cache_database2:
+    file: ./secrets/cache_database2.secret
+  cache_database3:
+    file: ./secrets/cache_database3.secret
+  grafana_admin_user:
+    file: ./secrets/grafana_admin_user.secret
+  grafana_admin_password:
+    file: ./secrets/grafana_admin_password.secret
 
 networks:
   ap_db:
