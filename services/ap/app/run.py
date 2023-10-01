@@ -92,7 +92,6 @@ def get_bunch(day_sym):
   cur.execute(f"SELECT `CREATE_TIME` FROM INFORMATION_SCHEMA.PARTITIONS WHERE `TABLE_NAME`='{table}'")
   dt = list(cur.fetchone().values())[0]
   date = f'{dt.year}年{dt.month}月{dt.day}日'
-  print(date)
 
   cnx.close()
 
