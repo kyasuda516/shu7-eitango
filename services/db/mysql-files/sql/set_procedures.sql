@@ -58,8 +58,7 @@ root: BEGIN
       `t`.`id`,
       `genres`.`name` AS `genre`,
       `pool`.`word`,
-      `pool`.`ja`,
-      `pool`.`pron`
+      `pool`.`ja`
     FROM
       `t` JOIN `pool` ON `t`.`id` = `pool`.`id`
           JOIN `genres` ON `t`.`genre_id` = `genres`.`id` 
