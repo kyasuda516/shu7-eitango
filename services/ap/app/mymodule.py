@@ -9,7 +9,7 @@ import limits
 import redis
 from datetime import datetime
 
-AVOID_API = os.environ.get('AVOID_API') in ('1', 1, 'True', True)
+AVOID_API = os.environ.get('AVOID_API').lower() in ('1', 'true')
 
 LOG_DIR = Path(__file__).parent / 'log'
 if not LOG_DIR.exists(): LOG_DIR.mkdir()

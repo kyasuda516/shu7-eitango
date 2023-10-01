@@ -12,7 +12,7 @@ from datetime import date
 import mymodule
 
 app = Flask(__name__)
-if os.environ.get('DEBUG_MODE') in ('1', 1, 'True', True):
+if os.environ.get('DEBUG_MODE').lower() in ('1', 'true'):
   app.wsgi_app = DebuggedApplication(app.wsgi_app, True)
   app.debug = True
 
@@ -105,7 +105,7 @@ def get_bunch(day_sym):
     cards=cards,
     created_date=date,
   ))
-  timeout = 1 if os.environ.get('DEBUG_MODE') in ('1', 1, 'True', True) else mymodule.get_timeout()
+  timeout = 1 if os.environ.get('DEBUG_MODE').lower() in ('1', 'true') else mymodule.get_timeout()
   # Note: 0ではデフォルト秒数になるので1で1秒に
   return CachedResponse(
     response=response,
