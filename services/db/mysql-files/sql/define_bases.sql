@@ -15,7 +15,6 @@ CREATE TABLE `pool` (
   `genre_id` INT(11) NOT NULL,
   `word` TEXT NOT NULL,
   `ja` TEXT NOT NULL,
-  `pron` TEXT NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (genre_id) REFERENCES genres(id)
 		ON DELETE CASCADE
