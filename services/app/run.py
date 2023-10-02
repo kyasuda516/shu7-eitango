@@ -21,7 +21,7 @@ cache = Cache(app, config={
   'CACHE_REDIS_HOST': mymodule.REDIS_HOST,
   'CACHE_REDIS_PORT': mymodule.REDIS_PORT,
   'CACHE_REDIS_PASSWORD': mymodule.get_const_value('REDIS_PASSWORD'),
-  'CACHE_REDIS_DB': mymodule.get_const_value('REDIS_DATABASE'),
+  'CACHE_REDIS_DB': mymodule.get_const_value('REDIS_DB_PAGE'),
   'CACHE_DEFAULT_TIMEOUT': 60,
 })
 

@@ -20,9 +20,9 @@ services:
       - db_password
       - db_database
       - cache_password
-      - cache_database
-      - cache_database2
-      - cache_database3
+      - cache_db_page
+      - cache_db_limits
+      - cache_db_pron
       - wordsapi_key
     ports:
       - 127.0.0.1:3031:3031
@@ -37,9 +37,6 @@ services:
       - ./envs/redis.env
     secrets:
       - cache_password
-      - cache_database
-      - cache_database2
-      - cache_database3
     networks: 
       - app_cache
 
@@ -125,12 +122,12 @@ secrets:
     file: ./secrets/db_database.secret
   cache_password:
     file: ./secrets/cache_password.secret
-  cache_database:
-    file: ./secrets/cache_database.secret
-  cache_database2:
-    file: ./secrets/cache_database2.secret
-  cache_database3:
-    file: ./secrets/cache_database3.secret
+  cache_db_page:
+    file: ./secrets/cache_db_page.secret
+  cache_db_limits:
+    file: ./secrets/cache_db_limits.secret
+  cache_db_pron:
+    file: ./secrets/cache_db_pron.secret
   grafana_admin_user:
     file: ./secrets/grafana_admin_user.secret
   grafana_admin_password:

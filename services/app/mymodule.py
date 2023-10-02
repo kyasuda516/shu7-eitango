@@ -14,6 +14,9 @@ MYSQL_HOST = 'db'
 MYSQL_PORT = '3306'
 REDIS_HOST = 'cache'
 REDIS_PORT = '6379'
+REDIS_DB_PAGE_FILE = '/run/secrets/cache_db_page'
+REDIS_DB_LIMS_FILE = '/run/secrets/cache_db_limits'
+REDIS_DB_PRON_FILE = '/run/secrets/cache_db_pron'
 WORDSAPI_KEY_FILE = '/run/secrets/wordsapi_key'
 LOG_DIR = Path(__file__).parent / 'log'
 if not LOG_DIR.exists(): LOG_DIR.mkdir()
@@ -55,14 +58,14 @@ class WordsAPI():
   logger.setLevel(INFO)
 
   storage = limits.storage.RedisStorage(
-    f'redis://:{get_const_value("REDIS_PASSWORD")}@{REDIS_HOST}:{REDIS_PORT}/{get_const_value("REDIS_DATABASE2")}')
+    f'redis://:{get_const_value("REDIS_PASSWORD")}@{REDIS_HOST}:{REDIS_PORT}/{get_const_value("REDIS_DB_LIMS")}')
   limiter = limits.strategies.MovingWindowRateLimiter(storage)
   rate_limit = limits.parse('200/2hours')
 
   pool = redis.ConnectionPool(
     host=REDIS_HOST,
     port=REDIS_PORT,
-    db=get_const_value('REDIS_DATABASE3'),
+    db=get_const_value('REDIS_DB_PRON'),
     password=get_const_value('REDIS_PASSWORD'),
   )
   redis_cli = redis.Redis(connection_pool=pool)
