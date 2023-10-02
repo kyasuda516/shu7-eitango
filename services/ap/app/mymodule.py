@@ -9,7 +9,7 @@ import limits
 import redis
 from datetime import datetime
 
-AVOID_API = os.environ.get('AVOID_API').lower() in ('1', 'true')
+AVOID_API = os.environ.get('AVOID_API', '').lower() in ('1', 'true')
 MYSQL_HOST = 'db'
 MYSQL_PORT = '3306'
 REDIS_HOST = 'cache'
