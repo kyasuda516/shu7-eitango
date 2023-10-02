@@ -12,11 +12,11 @@ services:
       DEBUG_MODE: 1
       AVOID_API: 1
     volumes:
-      - ./services/ap/app/static/:/app/static/:ro
-      - ./services/ap/app/templates/:/app/templates/:ro
-      - ./services/ap/app/mymodule.py:/app/mymodule.py:ro
-      - ./services/ap/app/run.py:/app/run.py:ro
-      - ./services/ap/app/uwsgi.ini:/app/uwsgi.ini:ro
+      - ./services/ap/static/:/app/static/:ro
+      - ./services/ap/templates/:/app/templates/:ro
+      - ./services/ap/mymodule.py:/app/mymodule.py:ro
+      - ./services/ap/run.py:/app/run.py:ro
+      - ./services/ap/uwsgi.ini:/app/uwsgi.ini:ro
   
   db:
     image: sh7e-db:dev

@@ -37,8 +37,9 @@ COPY --from=dev-builder /usr/local/bin/ /usr/local/bin/
 FROM base AS stg
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
-COPY ./app/ ./
-RUN useradd -M uwsgi \
+COPY ./ ./
+RUN rm ./Pipfile \
+ && useradd -M uwsgi \
  && chmod gu+s /usr/local/bin/uwsgi
 USER uwsgi
 
