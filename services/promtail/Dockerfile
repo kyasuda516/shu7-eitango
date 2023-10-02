@@ -7,7 +7,7 @@ EXPOSE 9080
 
 FROM base AS stg
 COPY --chmod=644 ./config.yaml /etc/promtail/myconfig.yaml
-RUN useradd promtail
+RUN useradd -M promtail
 USER promtail
 
 FROM stg AS prod

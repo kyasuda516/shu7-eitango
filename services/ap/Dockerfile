@@ -38,7 +38,7 @@ FROM base AS stg
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 COPY ./app/ ./
-RUN useradd uwsgi \
+RUN useradd -M uwsgi \
  && chmod gu+s /usr/local/bin/uwsgi
 USER uwsgi
 
