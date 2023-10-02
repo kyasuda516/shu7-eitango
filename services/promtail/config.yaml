@@ -78,7 +78,7 @@ scrape_configs:
         labels:
           job: web_error
           __path__: /var/log/nginx/error.log
-  - job_name: ap-wordsapi-log
+  - job_name: app-wordsapi-log
     pipeline_stages:
       - regex: 
           expression: '^time:(?P<time>.*)\tword:(?P<word>.*)\tres_code:(?P<res_code>.*)\tres_sec:(?P<res_sec>.*)\tpron:(?P<pron>.*)$'
@@ -96,5 +96,5 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: ap_wordsapi
+          job: app_wordsapi
           __path__: /var/log/python/wordsapi.log

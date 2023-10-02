@@ -1,8 +1,8 @@
 # prod
 
 services:
-  ap:
-    image: sh7e-ap:prod
+  app:
+    image: sh7e-app:prod
     build: 
       target: prod
     restart: always

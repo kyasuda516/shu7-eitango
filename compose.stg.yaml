@@ -1,8 +1,8 @@
 # stg
 
 services:
-  ap:
-    image: sh7e-ap:stg
+  app:
+    image: sh7e-app:stg
     build: 
       target: stg
     environment:

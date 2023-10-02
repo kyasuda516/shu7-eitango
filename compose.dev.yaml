@@ -3,20 +3,20 @@
 version: "3"
 
 services:
-  ap:
-    image: sh7e-ap:dev
+  app:
+    image: sh7e-app:dev
     build: 
       target: dev
-      # tags: ["sh7e-ap:dev"]   # image要素があるので不要 (imageで設定している名前で書き出される)。
+      # tags: ["sh7e-app:dev"]   # image要素があるので不要 (imageで設定している名前で書き出される)。
     environment:
       DEBUG_MODE: 1
       AVOID_API: 1
     volumes:
-      - ./services/ap/static/:/app/static/:ro
-      - ./services/ap/templates/:/app/templates/:ro
-      - ./services/ap/mymodule.py:/app/mymodule.py:ro
-      - ./services/ap/run.py:/app/run.py:ro
-      - ./services/ap/uwsgi.ini:/app/uwsgi.ini:ro
+      - ./services/app/static/:/app/static/:ro
+      - ./services/app/templates/:/app/templates/:ro
+      - ./services/app/mymodule.py:/app/mymodule.py:ro
+      - ./services/app/run.py:/app/run.py:ro
+      - ./services/app/uwsgi.ini:/app/uwsgi.ini:ro
   
   db:
     image: sh7e-db:dev

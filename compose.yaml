@@ -3,9 +3,9 @@
 version: "3"
 
 services:
-  ap:
+  app:
     build: 
-      context: ./services/ap/
+      context: ./services/app/
     depends_on:
       - db
       - cache
@@ -27,8 +27,8 @@ services:
     ports:
       - 127.0.0.1:3031:3031
     networks:
-      - ap_db
-      - ap_cache
+      - app_db
+      - app_cache
 
   cache:
     image: redis:7.0.12
@@ -41,7 +41,7 @@ services:
       - cache_database2
       - cache_database3
     networks: 
-      - ap_cache
+      - app_cache
 
   db:
     build:
@@ -57,13 +57,13 @@ services:
       - db_password
       - db_database
     networks:
-      - ap_db
+      - app_db
 
   web:
     build:
       context: ./services/web/
     depends_on:
-      - ap
+      - app
       - loki
     volumes:
       - nginx_logs:/var/log/nginx/
@@ -137,9 +137,9 @@ secrets:
     file: ./secrets/grafana_admin_password.secret
 
 networks:
-  ap_db:
+  app_db:
     driver: bridge
-  ap_cache:
+  app_cache:
     driver: bridge
   promtail_loki:
     driver: bridge
