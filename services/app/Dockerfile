@@ -40,7 +40,7 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 COPY ./ ./
 RUN rm ./Pipfile \
  && useradd -M uwsgi \
- && chmod gu+s /usr/local/bin/uwsgi
+ && chmod gu+s /usr/local/bin/uwsgi /usr/local/bin/python
 USER uwsgi
 
 FROM stg AS prod

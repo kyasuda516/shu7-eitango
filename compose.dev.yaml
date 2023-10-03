@@ -16,6 +16,7 @@ services:
       - ./services/app/templates/:/app/templates/:ro
       - ./services/app/mymodule.py:/app/mymodule.py:ro
       - ./services/app/run.py:/app/run.py:ro
+      - ./services/app/set_pron_caches.py:/app/set_pron_caches.py:ro
       - ./services/app/uwsgi.ini:/app/uwsgi.ini:ro
   
   db:

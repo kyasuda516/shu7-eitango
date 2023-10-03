@@ -96,18 +96,21 @@ def get_bunch(day_sym):
   cnx.close()
 
   # それぞれのカードについて発音を取得
-  words_api = mymodule.WordsAPI()
+  cache_cli = mymodule.CacheClient()
   for card in cards:
-    card['pron'] = words_api.get_pronunciation(card['word'])
+    pron_bytes = cache_cli.get(mymodule.PRON_KEY_FORMAT.format(word=card['word']))
+    pron = '-' if pron_bytes is None else pron_bytes.decode('utf-8')
+    card['pron'] = pron
 
-  response = make_response(render_template('bunch.html', 
+  response = make_response(render_template(
+    'bunch.html',
     this_day_sym=day_sym,
     cards=cards,
     created_date=date,
   ))
-  timeout = 1 if os.environ.get('DEBUG_MODE', '').lower() in ('1', 'true') else mymodule.get_timeout()
-  # Note: 0ではデフォルト秒数になるので1で1秒に
+  timeout = 1 if os.environ.get('DEBUG_MODE', '').lower() in ('1', 'true') else mymodule.seconds_until("6:00:00")
+  # Note: 0ではデフォルトの一定秒数になるので1で1秒に
   return CachedResponse(
     response=response,
-    timeout=timeout
+    timeout=timeout,
   )
