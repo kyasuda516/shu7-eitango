@@ -37,7 +37,7 @@ class WordsAPI():
       from random import randint, choice
       from time import sleep
       sleep(0.1)
-      pron = ''.join([choice(list('零壱弐参肆伍陸漆捌玖')) for _ in range(randint(4, 12))])
+      pron = ''.join([choice('ʌ æ ɑː əː ə ai au iː i iə u uː uə e ei eə ɔ ɔː ɔi ou p b t d k g f v θ ð s z ʃ ʒ ʧ ʤ h l r w j m n ŋ'.split(' ')) for _ in range(randint(5, 16))])
       time_request = time()
       res_code = 2200
       res_sec = 0.
