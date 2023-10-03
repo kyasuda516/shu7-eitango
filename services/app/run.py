@@ -72,28 +72,18 @@ def get_bunch(day_sym):
   elif day_sym not in DAYS:
     return render_template('error_404.html'), 404
 
-  cnx = mysql.connector.connect(
-    host=mymodule.MYSQL_HOST,
-    port=mymodule.MYSQL_PORT,
-    user=mymodule.get_const_value('MYSQL_USER'),
-    password=mymodule.get_const_value('MYSQL_PASSWORD'),
-    database=mymodule.get_const_value('MYSQL_DATABASE'),
-  )
   table = f'bunch{DAYS[day_sym]["id"]}'
-  cur = cnx.cursor(dictionary=True)
+  with mymodule.DbCursor() as cur:
+    # カードを取得
+    cur.execute(f'SELECT * FROM `{table}`')
+    cards = cur.fetchall()
 
-  # カードを取得
-  cur.execute(f'SELECT * FROM `{table}`')
-  cards = cur.fetchall()
-
-  # 日付を取得
-  # cur.execute(f'SHOW TABLE STATUS WHERE name='{table}'')
-  # created = cur.fetchone()['Create_time']
-  cur.execute(f"SELECT `CREATE_TIME` FROM INFORMATION_SCHEMA.PARTITIONS WHERE `TABLE_NAME`='{table}'")
-  dt = list(cur.fetchone().values())[0]
-  date = f'{dt.year}年{dt.month}月{dt.day}日'
-
-  cnx.close()
+    # 日付を取得
+    # cur.execute(f'SHOW TABLE STATUS WHERE name='{table}'')
+    # created = cur.fetchone()['Create_time']
+    cur.execute(f"SELECT `CREATE_TIME` FROM INFORMATION_SCHEMA.PARTITIONS WHERE `TABLE_NAME`='{table}'")
+    dt = list(cur.fetchone().values())[0]
+    date = f'{dt.year}年{dt.month}月{dt.day}日'
 
   # それぞれのカードについて発音を取得
   cache_cli = mymodule.CacheClient()
