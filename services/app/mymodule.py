@@ -18,6 +18,24 @@ LOG_DIR = Path(__file__).parent / 'log'
 if not LOG_DIR.exists(): LOG_DIR.mkdir()
 # PRON_KEY_FORMAT = 'wordsapi/pron/{pos_id}/{word}'
 PRON_KEY_FORMAT = 'wordsapi/pron/{word}'
+DAYS = {
+  day_name[:3].lower(): {
+    'id': index, 
+    'name': day_name,
+    'caption': f'{day_name[:3]}.',
+    'bunch_name': f"{day_name}'s Bunch",
+  }
+  for index, day_name
+  in enumerate([
+    'Sunday',
+    'Monday', 
+    'Tuesday', 
+    'Wednesday', 
+    'Thursday', 
+    'Friday', 
+    'Saturday', 
+  ])
+}
 
 def get_const_value(const_name: str) -> str:
   filepath_env_name = f'{const_name}_FILE'

@@ -25,28 +25,9 @@ cache = Cache(app, config={
   'CACHE_DEFAULT_TIMEOUT': 60,
 })
 
-DAYS = {
-  day_name[:3].lower(): {
-    'id': index, 
-    'name': day_name,
-    'caption': f'{day_name[:3]}.',
-    'bunch_name': f"{day_name}'s Bunch",
-  }
-  for index, day_name
-  in enumerate([
-    'Sunday',
-    'Monday', 
-    'Tuesday', 
-    'Wednesday', 
-    'Thursday', 
-    'Friday', 
-    'Saturday', 
-  ])
-}
-
 @app.context_processor
 def utility_processor():
-  return dict(days=DAYS)
+  return dict(days=mymodule.DAYS)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -59,20 +40,20 @@ def not_found(error):
 @app.route('/bunch', methods=['GET'])
 def get_today_bunch():
   day_id = (date.today().weekday()+1)%7
-  day_sym = [day_sym for day_sym, day in DAYS.items() if day['id']==day_id][0]
+  day_sym = [day_sym for day_sym, day in mymodule.DAYS.items() if day['id']==day_id][0]
   return redirect(f'/bunch/{day_sym}')
 
 @app.route('/bunch/<string:day_sym>', methods=['GET'])
 @cache.cached()
 def get_bunch(day_sym):
-  if day_sym in DAYS:
+  if day_sym in mymodule.DAYS:
     pass
-  elif day_sym.lower() in DAYS:
+  elif day_sym.lower() in mymodule.DAYS:
     return redirect(f'/bunch/{day_sym.lower()}')
-  elif day_sym not in DAYS:
+  elif day_sym not in mymodule.DAYS:
     return render_template('error_404.html'), 404
 
-  table = f'bunch{DAYS[day_sym]["id"]}'
+  table = f'bunch{mymodule.DAYS[day_sym]["id"]}'
   with mymodule.DbCursor() as cur:
     # カードを取得
     cur.execute(f'SELECT * FROM `{table}`')
