@@ -1,10 +1,10 @@
 DROP TABLE IF EXISTS `pool`;
-DROP TABLE IF EXISTS `genres`;
+DROP TABLE IF EXISTS `pos_config`;
 
--- genresテーブルを用意
-CREATE TABLE `genres` (
+-- pos_configテーブルを用意
+CREATE TABLE `pos_config` (
   `id` INT(11) NOT NULL,
-  `name` VARCHAR(128) NOT NULL,
+  `pos` VARCHAR(128) NOT NULL,
   `limit` INT(11) NOT NULL,
   PRIMARY KEY (id)
   );
@@ -12,11 +12,11 @@ CREATE TABLE `genres` (
 -- poolテーブルを用意
 CREATE TABLE `pool` (
   `id` INT(11) NOT NULL,
-  `genre_id` INT(11) NOT NULL,
+  `pos_id` INT(11) NOT NULL,
   `word` TEXT NOT NULL,
   `ja` TEXT NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (genre_id) REFERENCES genres(id)
+  FOREIGN KEY (pos_id) REFERENCES pos_config(id)
 		ON DELETE CASCADE
     ON UPDATE CASCADE
   );

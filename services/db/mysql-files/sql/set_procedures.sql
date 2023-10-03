@@ -36,32 +36,32 @@ root: BEGIN
     WITH `t` AS (
       SELECT 
         `id`,
-        `genre_id`
+        `pos_id`
       FROM
         -- ここで定義するshuffled_poolは、ジャンルごとにシャッフルされているpoolで、
         -- そしてシャッフルされたあとジャンルごとに連番（1始まり）がつけられている。
         (
           SELECT 
             `id`,
-            `genre_id`,
-            ROW_NUMBER() OVER (PARTITION BY `genre_id` ORDER BY RAND()) AS `num_in_genre`
+            `pos_id`,
+            ROW_NUMBER() OVER (PARTITION BY `pos_id` ORDER BY RAND()) AS `num_in_pos`
           FROM
             `pool`
         ) AS `shuffled_pool`
       WHERE
-        `num_in_genre` <= (SELECT `limit` FROM `genres` WHERE `genres`.`id`=`shuffled_pool`.`genre_id` LIMIT 1)
+        `num_in_pos` <= (SELECT `limit` FROM `pos_config` WHERE `pos_config`.`id`=`shuffled_pool`.`pos_id` LIMIT 1)
       ORDER BY
-        `genre_id`
+        `pos_id`
     )
     -- 骨状態のbunchに中身をつけて出力する。
     SELECT 
       `t`.`id`,
-      `genres`.`name` AS `genre`,
+      `pos_config`.`pos`,
       `pool`.`word`,
       `pool`.`ja`
     FROM
       `t` JOIN `pool` ON `t`.`id` = `pool`.`id`
-          JOIN `genres` ON `t`.`genre_id` = `genres`.`id` 
+          JOIN `pos_config` ON `t`.`pos_id` = `pos_config`.`id` 
   );
 
   -- tmpテーブルのidを連番に振り直す(0始まり)

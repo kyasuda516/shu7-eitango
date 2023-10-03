@@ -16,8 +16,7 @@ REDIS_DB_PRON_FILE = '/run/secrets/cache_db_pron'
 WORDSAPI_KEY_FILE = '/run/secrets/wordsapi_key'
 LOG_DIR = Path(__file__).parent / 'log'
 if not LOG_DIR.exists(): LOG_DIR.mkdir()
-# PRON_KEY_FORMAT = 'wordsapi/pron/{pos_id}/{word}'
-PRON_KEY_FORMAT = 'wordsapi/pron/{word}'
+PRON_KEY_FORMAT = 'wordsapi/pron/{pos}/{word}'
 DAYS = {
   day_name[:3].lower(): {
     'id': index, 
@@ -35,6 +34,24 @@ DAYS = {
     'Friday', 
     'Saturday', 
   ])
+}
+POSES = {
+  '冠詞':   'definite article' ,
+  '副詞':   'adverb' ,
+  # '文字':   'letter' ,
+  # '不定詞': 'to' ,
+  '名詞':   'noun' ,
+  '前置詞': 'preposition' ,
+  '形容詞': 'adjective' ,
+  '動詞':   'verb' ,
+  '接続詞': 'conjunction' ,
+  # '間投詞': 'interjection' ,
+  # '未分類': 'unclassified' ,
+  # '限定詞': 'determiner' ,
+  '代名詞': 'pronoun' ,
+  # '数詞':   'number' ,
+  # '否定詞': 'not' ,
+  # '例外':   'ex' ,
 }
 
 def get_const_value(const_name: str) -> str:

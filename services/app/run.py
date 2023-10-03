@@ -69,7 +69,9 @@ def get_bunch(day_sym):
   # それぞれのカードについて発音を取得
   cache_cli = mymodule.CacheClient()
   for card in cards:
-    pron_bytes = cache_cli.get(mymodule.PRON_KEY_FORMAT.format(word=card['word']))
+    pos_ja = card['pos']                              # POS(日本語)
+    pos = mymodule.POSES.get(pos_ja, 'unclassified')  # POS(英語)
+    pron_bytes = cache_cli.get(mymodule.PRON_KEY_FORMAT.format(pos=pos, word=card['word']))
     pron = '-' if pron_bytes is None else pron_bytes.decode('utf-8')
     card['pron'] = pron
 

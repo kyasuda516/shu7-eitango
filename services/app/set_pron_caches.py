@@ -6,25 +6,6 @@ from time import time
 from datetime import time as create_time
 import limits
 
-POSES = {
-  '冠詞':   'definite article' ,
-  '副詞':   'adverb' ,
-  # '文字':   'letter' ,
-  # '不定詞': 'to' ,
-  '名詞':   'noun' ,
-  '前置詞': 'preposition' ,
-  '形容詞': 'adjective' ,
-  '動詞':   'verb' ,
-  '接続詞': 'conjunction' ,
-  # '間投詞': 'interjection' ,
-  # '未分類': 'unclassified' ,
-  # '限定詞': 'determiner' ,
-  '代名詞': 'pronoun' ,
-  # '数詞':   'number' ,
-  # '否定詞': 'not' ,
-  # '例外':   'ex' ,
-}
-
 class WordsAPI():
   headers = {
     'X-RapidAPI-Key': mymodule.get_const_value('WORDSAPI_KEY'),
@@ -97,15 +78,16 @@ def main(cache_until: str):
   with mymodule.DbCursor() as cur:
     for bunch_id in range(7):
       table = f'bunch{bunch_id}'
-      cur.execute(f'SELECT `genre`, `word` FROM `{table}`')
+      cur.execute(f'SELECT `pos`, `word` FROM `{table}`')
       cards = cur.fetchall()
       for card in cards:
-        pos = POSES.get(card['genre'], 'unclassified')
+        pos_ja = card['pos']                              # POS(日本語)
+        pos = mymodule.POSES.get(pos_ja, 'unclassified')  # POS(英語)
         word = card['word']
         pron = api.get_pronunciation(pos, word)
         pron_bytes = pron.encode('utf-8')
         cache_cli.setex(
-          name=mymodule.PRON_KEY_FORMAT.format(word=word), 
+          name=mymodule.PRON_KEY_FORMAT.format(pos=pos, word=word), 
           time=mymodule.seconds_until(cache_until), 
           value=pron_bytes
         )
