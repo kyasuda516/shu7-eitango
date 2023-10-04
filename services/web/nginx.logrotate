@@ -1,7 +1,6 @@
 /var/log/nginx/access.log
 /var/log/nginx/error.log
 {
-  daily
   maxsize 1M
   missingok
   notifempty
