@@ -5,7 +5,7 @@ from datetime import datetime
 import mysql.connector
 from mysql.connector.cursor import MySQLCursor
 
-AVOID_API = os.environ.get('AVOID_API', '').lower() in ('1', 'true')
+DISABLE_API = os.environ.get('DISABLE_API', '').lower() in ('1', 'true')
 MYSQL_HOST = 'db'
 MYSQL_PORT = '3306'
 REDIS_HOST = 'cache'

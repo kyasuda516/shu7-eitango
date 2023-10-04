@@ -10,7 +10,7 @@ services:
       # tags: ["sh7e-app:dev"]   # image要素があるので不要 (imageで設定している名前で書き出される)。
     environment:
       DEBUG_MODE: 1
-      AVOID_API: 1
+      DISABLE_API: 1
     volumes:
       - ./services/app/static/:/app/static/:ro
       - ./services/app/templates/:/app/templates/:ro

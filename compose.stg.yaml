@@ -6,7 +6,7 @@ services:
     build: 
       target: stg
     environment:
-      AVOID_API: 1
+      DISABLE_API: 1
     restart: always
 
   cache:

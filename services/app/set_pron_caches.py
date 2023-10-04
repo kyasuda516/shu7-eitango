@@ -32,39 +32,41 @@ class WordsAPI():
   
   def get_pronunciation(self, pos: str, word: str) -> str:
     pron = '-'
-    mymodule.AVOID_API = False         # 必ず消す！！！☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★
-    if not mymodule.AVOID_API and self.limiter.hit(self.rate_limit, 'WordsAPI'):
-      from random import randint, choice
-      from time import sleep
-      sleep(0.1)
-      pron = ''.join([choice('ʌ æ ɑː əː ə ai au iː i iə u uː uə e ei eə ɔ ɔː ɔi ou p b t d k g f v θ ð s z ʃ ʒ ʧ ʤ h l r w j m n ŋ'.split(' ')) for _ in range(randint(5, 16))])
-      time_request = time()
-      res_code = 2200
-      res_sec = 0.
 
-      # url = f'https://wordsapiv1.p.rapidapi.com/words/{word}/pronunciation'
-      # time_request = time()
-      # res = requests.get(url, headers=self.headers)
-      # res_sec = time() - time_request
-      # res_code = res.status_code
+    if self.limiter.hit(self.rate_limit, 'WordsAPI'):
+      if mymodule.DISABLE_API:
+        from random import randint, choice
+        from time import sleep
+        sleep(0.3)
+        pron = ''.join([choice('ʌ æ ɑː əː ə ai au iː i iə u uː uə e ei eə ɔ ɔː ɔi ou p b t d k g f v θ ð s z ʃ ʒ ʧ ʤ h l r w j m n ŋ'.split(' ')) for _ in range(randint(5, 16))])
+        time_request = time()
+        res_code = 600
+        res_sec = 0.
 
-      # decoded = True
-      # try:
-      #   data = res.json()
-      # except requests.exceptions.JSONDecodeError:
-      #   decoded = False
-      
-      # if decoded:
-      #   data = data[0] if isinstance(data, list) else data
-      #   if isinstance(data, dict):
-      #     prons = data.get('pronunciation', pron)
-      #     if isinstance(prons, dict):
-      #       pron = prons.get(pos, False) or prons.get('all', pron)
-      #     elif isinstance(prons, str):
-      #       pron = str(prons)
+      else:
+        url = f'https://wordsapiv1.p.rapidapi.com/words/{word}/pronunciation'
+        time_request = time()
+        res = requests.get(url, headers=self.headers)
+        res_sec = time() - time_request
+        res_code = res.status_code
+
+        decoded = True
+        try:
+          data = res.json()
+        except requests.exceptions.JSONDecodeError:
+          decoded = False
+        
+        if decoded:
+          data = data[0] if isinstance(data, list) else data
+          if isinstance(data, dict):
+            prons = data.get('pronunciation', pron)
+            if isinstance(prons, dict):
+              pron = prons.get(pos, False) or prons.get('all', pron)
+            elif isinstance(prons, str):
+              pron = str(prons)
 
     else:
-      res_code = 603 if mymodule.AVOID_API else 629
+      res_code = 629
       time_request = time()
       res_sec = 0.
     
