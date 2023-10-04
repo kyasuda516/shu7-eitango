@@ -3,7 +3,7 @@ ARG PYTHON_VERSION=3.11.5
 
 FROM python:${PYTHON_VERSION} AS export
 RUN pip --no-cache-dir install pipenv
-COPY ./Pipfile ./
+COPY --chmod=644 ./Pipfile ./
 RUN sed -i s/%pythonVersion%/${PYTHON_VERSION}/g ./Pipfile \
  && pipenv lock \
  && pipenv requirements > /requirements.lock \
@@ -37,7 +37,7 @@ COPY --from=dev-builder /usr/local/bin/ /usr/local/bin/
 FROM base AS stg
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
-COPY ./ ./
+COPY --chmod=644 ./ ./
 RUN rm ./Pipfile \
  && useradd -M uwsgi \
  && chmod gu+s /usr/local/bin/uwsgi /usr/local/bin/python

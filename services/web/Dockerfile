@@ -24,19 +24,19 @@ RUN apk add libmaxminddb-dev logrotate \
  && rm -rf /var/cache/apk/* \
  && rm /etc/logrotate.conf
 COPY --from=builder /tmp/nginx-${NGINX_VERSION}/objs/ngx_http_geoip2_module.so /etc/nginx/modules/
-COPY ./nginx.logrotate /
+COPY --chmod=644 ./nginx.logrotate /
 EXPOSE 443
 
 FROM base AS dev
 
 FROM base AS base2
 RUN chmod gu+s /usr/sbin/nginx /usr/sbin/logrotate
-COPY ./nginx.conf /etc/nginx/
+COPY --chmod=644 ./nginx.conf /etc/nginx/
 USER nginx
 
 FROM base2 AS stg
-COPY ./default.stg.conf /etc/nginx/conf.d/default.conf
+COPY --chmod=644 ./default.stg.conf /etc/nginx/conf.d/default.conf
 
 FROM base2 AS prod
-# COPY ./default.first.prod.conf /etc/nginx/conf.d/default.conf
-COPY ./default.prod.conf /etc/nginx/conf.d/default.conf
+# COPY --chmod=644 ./default.first.prod.conf /etc/nginx/conf.d/default.conf
+COPY --chmod=644 ./default.prod.conf /etc/nginx/conf.d/default.conf
