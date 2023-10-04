@@ -79,8 +79,8 @@ def seconds_until(time_string: str) -> int:
   sec = (now.replace(hour=h, minute=m, second=s) - now).total_seconds() % (24*60*60)
   return int(sec)  # 小数点以下切り捨て
 
-# With文で横着できるMySQLカーソル
 class DbCursor(MySQLCursor):
+  """With文で横着できるMySQLカーソル"""
   def __new__(cls):
     cnx = mysql.connector.connect(
       host=MYSQL_HOST,
@@ -103,8 +103,8 @@ class DbCursor(MySQLCursor):
     super().close()
     self.cnx.close()
 
-# SingletonパターンのRedisクライアント
 class CacheClient():
+  """SingletonパターンのRedisクライアント（ただし、発音用のデータベースと接続）"""
   __pool = redis.ConnectionPool(
     host=REDIS_HOST,
     port=REDIS_PORT,
