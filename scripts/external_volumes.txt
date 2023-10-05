@@ -1,0 +1,6 @@
+sh7e_geoip_db_1
+sh7e_ssl_certs_1
+sh7e_grafana_data_1
+sh7e_loki_data_1
+sh7e_mysql_data_1
+  
