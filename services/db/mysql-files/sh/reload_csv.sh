@@ -3,9 +3,9 @@
 # なお、このスクリプトはどこに移動しても問題なく動きます。
 set -eu
 
-# 引数チェック
-if [ $# != 1 ]; then
-  echo "Error! Valid usage: ${0} <table_name>"
+# 引数の数をチェック
+if [ $# -ne 1 ]; then
+  echo "ERROR: usage: ${0} [table]"
   exit 1
 fi
 

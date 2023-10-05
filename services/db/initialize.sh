@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eu
 
 sql_files=/var/lib/mysql-files/sql
 stmt="${stmt}  source ${sql_files}/set_procedures.sql;"
