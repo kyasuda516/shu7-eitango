@@ -61,7 +61,7 @@ services:
       context: ./services/web/
     depends_on:
       - app
-      - loki
+      - grafana
     volumes:
       - nginx_logs:/var/log/nginx/
       - geoip_db:/usr/share/GeoIP/
@@ -70,6 +70,8 @@ services:
   grafana:
     build:
       context: ./services/grafana/
+    depends_on:
+      - loki
     volumes:
       - grafana_data:/var/lib/grafana/
     secrets:
@@ -83,6 +85,8 @@ services:
   loki:
     build:
       context: ./services/loki/
+    depends_on:
+      - promtail
     networks:
       - promtail_loki
       - loki_grafana
