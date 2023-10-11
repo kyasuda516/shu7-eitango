@@ -28,9 +28,8 @@ services:
       resources:
         limits:
           pids: 20
-    secrets:
-      - nginx_key
-      - nginx_cert
+    volumes:
+      - ./services/web/ssl_certs_temp/:/etc/ssl/certs/nginx/
 
   grafana:
     image: sh7e-grafana:stg
@@ -67,7 +66,3 @@ secrets:
     file: ./secrets/grafana_mail_address.secret
   grafana_mail_key:
     file: ./secrets/grafana_mail_key.secret
-  nginx_key:
-    file: ./services/web/ssl_certs_temp/domain.key
-  nginx_cert:
-    file: ./services/web/ssl_certs_temp/signed.crt
