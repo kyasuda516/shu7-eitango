@@ -72,11 +72,15 @@ services:
       context: ./services/grafana/
     depends_on:
       - loki
+    env_file:
+      - ./envs/grafana.env
     volumes:
       - grafana_data:/var/lib/grafana/
     secrets:
       - grafana_admin_user
       - grafana_admin_password
+      - grafana_mail_address
+      - grafana_mail_key
     ports:
       - 127.0.0.1:3128:3128
     networks:
@@ -136,6 +140,10 @@ secrets:
     file: ./secrets/grafana_admin_user.secret
   grafana_admin_password:
     file: ./secrets/grafana_admin_password.secret
+  grafana_mail_address:
+    file: ./secrets/grafana_mail_address.secret
+  grafana_mail_key:
+    file: ./secrets/grafana_mail_key.secret
 
 networks:
   app_db:

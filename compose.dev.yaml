@@ -58,8 +58,6 @@ services:
     image: sh7e-grafana:dev
     build:
       target: dev
-    env_file:
-      - ./envs/grafana.dev.env
     volumes:
       - ./services/grafana/grafana.dev.ini:/etc/grafana/grafana.ini
 

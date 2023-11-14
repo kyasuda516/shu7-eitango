@@ -54,12 +54,7 @@ services:
     image: sh7e-grafana:prod
     build:
       target: prod
-    env_file:
-      - ./envs/grafana.env
     restart: always
-    secrets:
-      - grafana_mail_address
-      - grafana_mail_key
 
   loki:
     image: sh7e-loki:prod
@@ -83,9 +78,3 @@ volumes:
     external: true
     name: sh7e_ssl_certs_1
   dist:
-
-secrets:
-  grafana_mail_address:
-    file: ./secrets/grafana_mail_address.secret
-  grafana_mail_key:
-    file: ./secrets/grafana_mail_key.secret

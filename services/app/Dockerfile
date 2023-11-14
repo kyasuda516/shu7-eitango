@@ -37,10 +37,10 @@ COPY --from=dev-builder /usr/local/bin/ /usr/local/bin/
 FROM base AS stg
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
-COPY --chmod=644 ./ ./
-RUN rm ./Pipfile \
- && useradd -M uwsgi \
+RUN useradd -M uwsgi \
  && chmod gu+s /usr/local/bin/uwsgi /usr/local/bin/python
+COPY --chmod=644 ./ ./
+RUN rm ./Pipfile
 USER uwsgi
 
 FROM stg AS prod

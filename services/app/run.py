@@ -6,7 +6,6 @@ from flask_caching import Cache
 from flask_caching import CachedResponse
 # from flask_cors import CORS
 from werkzeug.debug import DebuggedApplication
-import mysql.connector
 import os
 from datetime import date
 import mymodule
