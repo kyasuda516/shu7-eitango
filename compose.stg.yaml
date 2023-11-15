@@ -30,6 +30,7 @@ services:
           pids: 20
     volumes:
       - ./services/web/ssl_certs_temp/:/etc/ssl/certs/nginx/
+      - ./services/web/geoip_db_dummy/:/usr/share/GeoIP/
 
   grafana:
     image: sh7e-grafana:stg

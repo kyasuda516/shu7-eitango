@@ -29,6 +29,7 @@ services:
     volumes:
       - ssl_certs:/etc/letsencrypt/
       - dist:/usr/share/nginx/html/ssl-proof/
+      - geoip_db:/usr/share/GeoIP/
 
   cert:
     image: certbot/certbot:v2.6.0
@@ -78,3 +79,6 @@ volumes:
     external: true
     name: sh7e_ssl_certs_1
   dist:
+  geoip_db:
+    external: true
+    name: sh7e_geoip_db_1

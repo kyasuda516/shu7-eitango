@@ -64,7 +64,6 @@ services:
       - grafana
     volumes:
       - nginx_logs:/var/log/nginx/
-      - geoip_db:/usr/share/GeoIP/
     network_mode: host
   
   grafana:
@@ -107,9 +106,6 @@ services:
 volumes:
   nginx_logs:
   python_logs:
-  geoip_db:
-    external: true
-    name: sh7e_geoip_db_1
   mysql_data:
     external: true
     name: sh7e_mysql_data_1
