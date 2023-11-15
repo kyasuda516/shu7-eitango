@@ -29,7 +29,7 @@ services:
         limits:
           pids: 20
     volumes:
-      - ./services/web/ssl_certs_temp/:/etc/ssl/certs/nginx/
+      - ./services/web/ssl_certs_dummy/:/etc/ssl/certs/nginx/
       - ./services/web/geoip_db_dummy/:/usr/share/GeoIP/
 
   grafana:
