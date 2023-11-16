@@ -26,3 +26,5 @@ jobs:
         run: /bin/bash ./scripts/test/res_code_is_200.sh /admin/grafana
       - name: Test of request to /bunch
         run: /bin/bash ./scripts/test/res_code_is_200.sh /bunch
+      - name: Test if all containers are running
+        run: /bin/bash ./scripts/test/all_containers_are_up.sh
