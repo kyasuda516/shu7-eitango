@@ -1,5 +1,7 @@
 # common
 
+name: sh7e
+
 version: "3"
 
 services:
