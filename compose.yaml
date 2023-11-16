@@ -1,8 +1,8 @@
 # common
 
-name: sh7e
-
 version: "3"
+
+name: sh7e
 
 services:
   app:
