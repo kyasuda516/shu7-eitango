@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Docker Composeをインストールする。
 set -eu
 
 sudo apt update
