@@ -2,6 +2,7 @@
 !.gitignore
 !.gitkeep
 *.css.map
+!/.github/
 
 # secret
 *.secret

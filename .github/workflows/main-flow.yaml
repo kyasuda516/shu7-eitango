@@ -1,0 +1,28 @@
+name: Main Flow
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  main-job:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup
+        run: |
+          /bin/bash ./scripts/setup/create_volumes.sh
+          /bin/bash ./scripts/setup/export_secrets.sh --overwrite
+      - name: Build
+        run: docker compose -f compose.yaml -f compose.stg.yaml up -d
+      - name: Sleep for 1 minute
+        run: sleep 60s
+        shell: bash
+      - name: Test of request to /
+        run: /bin/bash ./scripts/test/res_code_is_200.sh
+      - name: Test of request to /admin/grafana
+        run: /bin/bash ./scripts/test/res_code_is_200.sh /admin/grafana
+      - name: Test of request to /bunch
+        run: /bin/bash ./scripts/test/res_code_is_200.sh /bunch
