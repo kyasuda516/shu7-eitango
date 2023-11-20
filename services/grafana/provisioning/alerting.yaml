@@ -1,0 +1,140 @@
+# https://grafana.com/docs/grafana/latest/alerting/set-up/provision-alerting-resources/file-provisioning/
+# config file version
+apiVersion: 1
+
+# List of rule groups to import or update
+# https://shu7-eitango.com/admin/grafana/api/v1/provisioning/alert-rules/export
+groups:
+  - orgId: 1
+    name: Group 1
+    folder: Folder 1
+    interval: 2m
+    rules:
+      - uid: group1
+        title: Rule 1
+        condition: A
+        data:
+          - refId: A
+            queryType: instant
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: loki
+            model:
+              editorMode: builder
+              expr: |-
+                count by(job, forwarded_for) (max by(forwarded_for) (count_over_time({
+                  job="web_access", request_uri=~"/admin/grafana/avatar/.*", status="200"} [$__range])))
+              intervalMs: 1000
+              maxDataPoints: 43200
+              queryType: instant
+              refId: A
+        noDataState: OK
+        execErrState: OK
+        for: 2m
+        annotations:
+          description: |-
+              直近4分以内に、次のIPアドレスを有する端末からログインがありました。
+
+              {{ $labels.forwarded_for }}
+
+              上記IPアドレスに覚えがない場合、ただちにGrafanaにて侵入元の詳しい情報を確認し、適切な対処をおこなってください。
+              Grafana：https://shu7-eitango.com/admin/grafana/
+          summary: 不明なデバイスからGrafanaにログインがありました。
+        labels:
+          name: unknown-login
+          severity: high
+        isPaused: false
+  - orgId: 1
+    name: Group 2
+    folder: Folder 1
+    interval: 5m
+    rules:
+      - uid: group2
+        title: Rule 2
+        condition: B
+        data:
+          - refId: A
+            queryType: instant
+            relativeTimeRange:
+              from: 86400
+              to: 0
+            datasourceUid: loki
+            model:
+              editorMode: builder
+              expr: sum by(job) (count_over_time({job="app_wordsapi", res_code="200"} [$__range]))
+              intervalMs: 1000
+              maxDataPoints: 43200
+              queryType: instant
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 1000
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params: []
+                  reducer:
+                    params: []
+                    type: avg
+                  type: query
+              datasource:
+                name: Expression
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: B
+              type: threshold
+        noDataState: OK
+        execErrState: OK
+        for: 5m
+        annotations:
+          description: |-
+            APIが過去24時間以内に1000回以上呼び出されました。
+            今すぐプログラムを中断するなどして、API呼び出しを止めてください。
+          summary: APIの呼び出し回数が多すぎます。
+        labels:
+          name: too-frequent-api
+          severity: high
+        isPaused: false
+
+# List of contact points to import or update
+# https://shu7-eitango.com/admin/grafana/api/v1/provisioning/contact-points/export
+contactPoints:
+  - orgId: 1
+    name: Email Reciever 1
+    receivers:
+      - uid: email_reciever1
+        type: email
+        settings:
+          addresses: $MAIL_TO
+          singleEmail: false
+        disableResolveMessage: true
+
+# List of notification policies
+# https://shu7-eitango.com/admin/grafana/api/v1/provisioning/policies/export
+policies:
+  - orgId: 1
+    receiver: grafana-default-email
+    group_by:
+      - grafana_folder
+      - alertname
+    routes:
+      - receiver: Email Reciever 1
+        object_matchers:
+          - - name
+            - =
+            - unknown-login
+      - receiver: Email Reciever 1
+        object_matchers:
+          - - name
+            - =
+            - too-frequent-api
