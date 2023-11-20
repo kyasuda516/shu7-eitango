@@ -36,8 +36,6 @@ services:
     image: sh7e-grafana:stg
     build:
       target: stg
-    env_file:
-      - ./envs/grafana.env
     restart: always
 
   loki:
