@@ -11,4 +11,4 @@ test.%: build.%
 clean.%: compose.%.yaml
 	docker compose -f compose.yaml -f $< down
 
-clean: clean.dev clean.stg
+clean: clean.dev clean.stg clean.prod
