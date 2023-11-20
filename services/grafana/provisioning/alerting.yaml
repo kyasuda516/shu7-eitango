@@ -17,7 +17,7 @@ groups:
           - refId: A
             queryType: instant
             relativeTimeRange:
-              from: 600
+              from: 240
               to: 0
             datasourceUid: loki
             model:
