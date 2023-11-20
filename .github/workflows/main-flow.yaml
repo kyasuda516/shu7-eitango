@@ -16,6 +16,8 @@ jobs:
           /bin/bash ./scripts/setup/create_volumes.sh
           /bin/bash ./scripts/setup/export_secrets.sh --overwrite
       - name: Build
+        env: 
+          GRAFANA_ALERT_MAIL_TO: ${{secrets.GRAFANA_ALERT_MAIL_TO}}
         run: docker compose -f compose.yaml -f compose.stg.yaml up -d
       - name: Sleep for 1 minute
         run: sleep 60s
