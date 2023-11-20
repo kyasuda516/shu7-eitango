@@ -73,6 +73,8 @@ services:
       context: ./services/grafana/
     depends_on:
       - loki
+    environment:
+      MAIL_TO: $GRAFANA_ALERT_MAIL_TO
     env_file:
       - ./envs/grafana.env
     volumes:
