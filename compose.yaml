@@ -34,7 +34,7 @@ services:
 
   cache:
     image: redis:7.0.12
-    command: ['/bin/sh', '-c', 'redis-server --requirepass "$$(sed -n 1p $$REDIS_PASSWORD_FILE)"']
+    command: ['/bin/sh', '-c', 'redis-server --appendonly yes --requirepass "$$(sed -n 1p $$REDIS_PASSWORD_FILE)"']
     env_file:
       - ./envs/redis.env
     secrets:

@@ -9,6 +9,8 @@ services:
 
   cache:
     user: redis
+    volumes:
+      - redis_data:/data
     restart: always
 
   db:
@@ -72,6 +74,9 @@ services:
     restart: always
 
 volumes:
+  redis_data:
+    external: true
+    name: sh7e_redis_data_1
   loki_data:
     external: true
     name: sh7e_loki_data_1
