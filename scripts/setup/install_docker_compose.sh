@@ -17,7 +17,8 @@ sudo groupadd -f docker
 sudo usermod -aG docker $USER
 echo -e "\033[32mCompleted installing Docker"'!'"\033[m"
 
-DOCKER_COMPOSE_VERSION=$(python3 -c "from json import loads;print(loads('''$(curl https://api.github.com/repos/docker/compose/releases/latest)''',strict=False)['tag_name'])")  # 最新のバージョン番号を取得
+sudo apt install -y jq
+DOCKER_COMPOSE_VERSION=$(curl https://api.github.com/repos/docker/compose/releases/latest | jq -r '.tag_name')  # 最新のバージョン番号を取得
 DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
 mkdir -p $DOCKER_CONFIG/cli-plugins
 curl -SL "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o $DOCKER_CONFIG/cli-plugins/docker-compose
