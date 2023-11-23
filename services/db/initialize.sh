@@ -4,9 +4,9 @@ set -eu
 sql_files=/var/lib/mysql-files/sql
 stmt=""
 stmt="${stmt}  source ${sql_files}/set_procedures.sql;"
-stmt="${stmt}  source ${sql_files}/define_bases.sql;"
-stmt="${stmt}  $(sed s/%tableName%/pos_config/g ${sql_files}/_update_base.sql)"
-stmt="${stmt}  $(sed s/%tableName%/pool/g ${sql_files}/_update_base.sql)"
+stmt="${stmt}  source ${sql_files}/define_masters.sql;"
+stmt="${stmt}  $(sed s/%tableName%/pos_config/g ${sql_files}/_update_master.sql)"
+stmt="${stmt}  $(sed s/%tableName%/pool/g ${sql_files}/_update_master.sql)"
 stmt="${stmt}  source ${sql_files}/set_bunches.sql;"
 stmt="${stmt}  source ${sql_files}/set_events.sql;"
 

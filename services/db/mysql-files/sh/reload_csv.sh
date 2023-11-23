@@ -13,5 +13,5 @@ fi
 sql_files=/var/lib/mysql-files/sql
 rootpw=$(sed -n 1p $MYSQL_ROOT_PASSWORD_FILE)
 dbdb=$(sed -n 1p $MYSQL_DATABASE_FILE)
-mysql -u root -p$rootpw $dbdb -e "$(sed s/%tableName%/${1}/g ${sql_files}/_update_base.sql)"
+mysql -u root -p$rootpw $dbdb -e "$(sed s/%tableName%/${1}/g ${sql_files}/_update_master.sql)"
 echo "Successfully reloaded csv!"
