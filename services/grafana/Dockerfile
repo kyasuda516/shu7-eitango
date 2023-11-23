@@ -1,4 +1,4 @@
-FROM grafana/grafana:10.1.0 AS base
+FROM grafana/grafana:10.2.2 AS base
 ENV GF_EXPLORE_ENABLED true
 EXPOSE 3128
 

@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.11.5
+ARG PYTHON_VERSION=3.11.6
 # [NB] If you change the minor version number (Y of X.Y.Z), also change the directory number in the dev and stg stages.
 
 FROM python:${PYTHON_VERSION} AS export

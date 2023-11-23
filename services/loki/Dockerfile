@@ -1,4 +1,4 @@
-FROM grafana/loki:2.8.4 AS base
+FROM grafana/loki:2.9.2 AS base
 CMD ["-config.file=/etc/loki/myconfig.yaml"]
 
 FROM base AS dev

@@ -1,4 +1,4 @@
-FROM grafana/promtail:2.8.4 AS base
+FROM grafana/promtail:2.9.2 AS base
 ENV TZ="Asia/Tokyo"
 CMD ["-config.file=/etc/promtail/myconfig.yaml"]
 
