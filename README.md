@@ -1,4 +1,4 @@
-[![ヘッダー画像](/docs/img/header.svg)](https://shu7-eitango.com)
+![ヘッダー画像](/docs/img/header.svg)
 
 <br>
 
@@ -40,7 +40,7 @@
 | ----------------- | -------------------------------------------- |
 | Frontend          | Bootstrap                                    |
 | Backend           | Nginx, uWSGI, Flask, Python                  |
-| Infrastructure    | Amazon Lightsail                             |
+| Infrastructure    | Amazon Lightsail, Cloudflare                 |
 | Database          | MySQL, Redis                                 |
 | Monitoring        | Grafana                                      |
 | Environment setup | Docker Compose                               |
@@ -63,6 +63,8 @@
     <summary>計画中のER図</summary>
 
     ![計画中のER図](/docs/img/erdiagram.svg)
+    
+    ※`category`は現在`pos`と呼んでいるものに対応。
     </details>
 
 また、優先度は上記より低いものの、フロントエンドについても以下の改善を行うつもりです。
