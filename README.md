@@ -1,10 +1,8 @@
-![ヘッダー画像](/docs/img/header.svg)
+# ![ヘッダー画像](/docs/img/header.svg)
 
-<br>
+本リポジトリは、ウェブサイト「週7英単語」の開発プロジェクトを管理するものです。
 
-# このリポジトリについて
-
-本リポジトリは、ウェブサイト「[週7英単語](https://shu7-eitango.com)」の開発プロジェクトを管理するものです。
+週7英単語のURL：https://shu7-eitango.com
 
 # 背景
 
@@ -36,17 +34,17 @@
 
 # 使用技術
 
-| Category          | Technology Stack                             |
-| ----------------- | -------------------------------------------- |
-| Frontend          | Bootstrap                                    |
-| Backend           | Nginx, uWSGI, Flask, Python                  |
-| Infrastructure    | Amazon Lightsail, Cloudflare                 |
-| Database          | MySQL, Redis                                 |
-| Monitoring        | Grafana                                      |
-| Environment setup | Docker Compose                               |
-| CI/CD             | GitHub Actions                               |
-| Design            | PowerPoint                                   |
-| etc.              | Grafana Loki, Promtail, Certbot, geoipupdate |
+| Category          | Technology Stack               |
+| ----------------- | ------------------------------ |
+| Frontend          | Bootstrap                      |
+| Backend           | Nginx, uWSGI, Flask, Python    |
+| Infrastructure    | Amazon Lightsail, Cloudflare   |
+| Database          | MySQL, Redis, Grafana Loki     |
+| Monitoring        | Grafana                        |
+| Environment setup | Docker Compose                 |
+| CI/CD             | GitHub Actions                 |
+| Design            | PowerPoint                     |
+| etc.              | Promtail, Certbot, geoipupdate |
 
 # システム構成図
 
