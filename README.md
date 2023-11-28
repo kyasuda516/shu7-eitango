@@ -38,7 +38,7 @@
 | ----------------- | ------------------------------ |
 | Frontend          | Bootstrap                      |
 | Backend           | Nginx, uWSGI, Flask, Python    |
-| Infrastructure    | Amazon Lightsail, Cloudflare   |
+| Infrastructure    | Amazon EC2, Cloudflare         |
 | Database          | MySQL, Redis, Grafana Loki     |
 | Monitoring        | Grafana                        |
 | Environment setup | Docker Compose                 |
