@@ -34,7 +34,7 @@
 
 # 使用技術
 
-| Category          | Technology Stack               |
+| 分類 | 技術スタック |
 | ----------------- | ------------------------------ |
 | Frontend          | Bootstrap                      |
 | Backend           | Nginx, uWSGI, Flask, Python    |
