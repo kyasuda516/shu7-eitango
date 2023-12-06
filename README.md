@@ -48,7 +48,18 @@
 
 # システム構成図
 
-![システム構成図](/docs/img/sysconf.svg)
+- AWS構成図
+
+  1つのVPCに1つのEC2インスタンスという極めて単純な構成になっています。
+
+  ![AWS構成図](/docs/img/awsconfig.svg)
+
+- Docker Composeプロジェクトの構成図
+
+  EC2インスタンスでDocker Composeプロジェクトを立ち上げています。  
+  このComposeプロジェクトの中では、RDB、キーバリューストアを含めた9つのコンテナを動かしています。
+
+  ![Composeプロジェクトの構成図](/docs/img/prjconf.svg)
 
 # 今後の展望
 
